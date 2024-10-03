@@ -37,6 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     auth0_sub = models.CharField(max_length=400, null=True, blank=True)
+    company = models.ForeignKey('CompanyProfile', on_delete=models.SET_NULL, related_name='users', null=True, blank=True)
 
     objects = CustomUserManager()
 
@@ -46,3 +47,33 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return str(self.email)
 
+
+class BlockedToken(models.Model):
+    token = models.TextField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.token
+
+
+class CompanyProfile(models.Model):
+    company_name = models.TextField(null=True, blank=True)
+    company_address = models.TextField()
+    company_registration_no = models.TextField(null=True, blank=True)
+    post_code = models.TextField(default=0000)
+    company_town = models.TextField()
+    company_country = models.TextField(null=True, blank=True)
+    company_tell_no = models.TextField()
+    company_mob_no = models.TextField()
+    company_web_address = models.TextField()
+    company_email_address = models.TextField()
+    company_tax_reference = models.TextField()
+    company_iban = models.TextField()
+    company_bank_name = models.TextField(null=True,blank=True)
+    company_bic = models.TextField(null=True, blank=True)
+    company_bank_address = models.TextField(null=True, blank=True)
+    company_image = models.ImageField(upload_to="company_images", null=True, blank=True)
+    admin_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="company_profile")
+
+    def __str__(self):
+        return str(self.company_name)
