@@ -81,6 +81,8 @@ class CompanyProfile(models.Model):
     company_image = models.ImageField(upload_to="company_images", null=True, blank=True)
     admin_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="company_profile")
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
+    tax_number = models.CharField(max_length=255, blank=True, null=True)
+
 
     def __str__(self):
         return str(self.company_name)
