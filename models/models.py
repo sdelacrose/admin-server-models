@@ -41,6 +41,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     auth0_sub = models.CharField(max_length=400, null=True, blank=True)
     company = models.ForeignKey('CompanyProfile', on_delete=models.SET_NULL, related_name='users', null=True, blank=True)
+    job_title = models.CharField(max_length=500, null=True, blank=True)
+    mobile_phone = models.CharField(max_length=500, null=True, blank=True)
+    street_address = models.TextField(null=True, blank=True)
+    city = models.CharField(max_length=500, null=True, blank=True)
+    state = models.CharField(max_length=500, null=True, blank=True)
+    post_code = models.CharField(max_length=500, null=True, blank=True)
+    country = models.CharField(max_length=500, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
