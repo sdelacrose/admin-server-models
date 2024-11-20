@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Django>=5.1',
+        'Django==5.1.1',
     ],
     description='A shared Django app for models management across multiple projects',
     long_description=open('README.md').read(),
