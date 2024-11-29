@@ -62,6 +62,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class BlockedToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='jwt_tokens')
+    is_blocked = models.BooleanField(default=False)
     token = models.TextField(unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
