@@ -2,6 +2,7 @@ from django.contrib.auth.models import BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser
+from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
@@ -51,11 +52,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    preferred_language = models.CharField(
+        max_length=50,
+        default="English",
+        choices=[
+            ("English", _("English")),
+            ("French", _("French")),
+            ("German", _("German")),
+        ],
+    )
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+    
 
     def __str__(self):
         return str(self.email)
