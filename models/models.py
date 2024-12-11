@@ -29,6 +29,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, blank=True, null=True)
     title = models.CharField(max_length=30, blank=True)
@@ -50,8 +51,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     post_code = models.CharField(max_length=500, null=True, blank=True)
     country = models.CharField(max_length=500, null=True, blank=True)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     preferred_language = models.CharField(
         max_length=50,
         default="English",
@@ -61,6 +60,16 @@ class User(AbstractBaseUser, PermissionsMixin):
             ("German", _("German")),
         ],
     )
+    USER_TYPE_CHOICES = [
+        ("freelancer", "Freelancer"),
+        ("company_user", "Company User"),
+    ]
+
+    user_type = models.CharField(
+        max_length=20, choices=USER_TYPE_CHOICES, null=True, blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     objects = CustomUserManager()
 
@@ -70,6 +79,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return str(self.email)
+
+    @property
+    def is_freelancer(self):
+        """
+        Check if the user is a freelancer based on user_type.
+        """
+        return self.user_type == 'freelancer'
 
 
 class BlockedToken(models.Model):
