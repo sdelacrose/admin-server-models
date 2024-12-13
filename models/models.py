@@ -31,6 +31,7 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
+    sharemundo_links_id = models.CharField(max_length=100, null=True, blank=True, unique=True, db_index=True)
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, blank=True, null=True)
     title = models.CharField(max_length=30, blank=True)
@@ -88,6 +89,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.user_type == 'freelancer'
 
+    @property
+    def is_company_admin(self):
+        return self.company and self.company.admin_user.id == self.id
+
 
 class BlockedToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='jwt_tokens')
@@ -100,6 +105,7 @@ class BlockedToken(models.Model):
 
 
 class CompanyProfile(models.Model):
+    sharemundo_links_id = models.CharField(max_length=100, null=True, blank=True, unique=True, db_index=True)
     company_name = models.TextField(null=True, blank=True)
     company_address = models.TextField()
     company_registration_no = models.TextField(null=True, blank=True)
@@ -123,6 +129,44 @@ class CompanyProfile(models.Model):
 
     def __str__(self):
         return str(self.company_name)
+
+
+class Connection(models.Model):
+    ENTITY_TYPE_CHOICES = (
+        ('freelancer', 'Freelancer'),
+        ('company', 'Company'),
+        ('user', 'User'),
+    )
+
+    initiator_type = models.CharField(max_length=50, choices=ENTITY_TYPE_CHOICES)
+    initiator_id = models.CharField(max_length=100)
+    target_type = models.CharField(max_length=50, choices=ENTITY_TYPE_CHOICES)
+    target_id = models.CharField(max_length=100)
+    status = models.CharField(
+        max_length=50,
+        choices=(('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')),
+        default='pending'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('initiator_type', 'initiator_id', 'target_type', 'target_id')
+
+
+class ConnectionUser(models.Model):
+    connection = models.ForeignKey(Connection, on_delete=models.CASCADE, related_name='requested_users')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='connection_requests')
+    status = models.CharField(
+        max_length=50,
+        choices=(('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')),
+        default='pending'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('connection', 'user')
 
 
 class GlobalConfig(models.Model):
