@@ -94,6 +94,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.company and self.company.admin_user.id == self.id
 
 
+class FreelancerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='freelancer_profile')
+    bank_name = models.CharField(max_length=255)
+    iban = models.CharField(max_length=255)
+    bic = models.CharField(max_length=255)
+    bank_address = models.TextField()
+
+
 class BlockedToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='jwt_tokens')
     is_blocked = models.BooleanField(default=False)
