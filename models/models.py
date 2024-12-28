@@ -92,6 +92,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_company_admin(self):
         return self.company and self.company.admin_user.id == self.id
+    
+    @property
+    def full_name(self):
+        if self.first_name and self.last_name:
+            return f'{self.first_name} {self.last_name}' 
+        return ''
 
 
 class FreelancerProfile(models.Model):
