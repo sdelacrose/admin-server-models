@@ -52,6 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     state = models.CharField(max_length=500, null=True, blank=True)
     post_code = models.CharField(max_length=500, null=True, blank=True)
     country = models.CharField(max_length=500, null=True, blank=True)
+    license_allocated = models.BooleanField(default=False)
 
     preferred_language = models.CharField(
         max_length=50,
