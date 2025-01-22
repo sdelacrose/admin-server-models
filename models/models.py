@@ -256,3 +256,8 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    priority_levels = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list
+    )
