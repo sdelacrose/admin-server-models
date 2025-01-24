@@ -121,6 +121,7 @@ class BlockedToken(models.Model):
 
 class CompanyProfile(models.Model):
     sharemundo_links_id = models.CharField(max_length=100, null=True, blank=True, unique=True, db_index=True)
+    company_searchable = models.BooleanField(default=False)
     company_name = models.TextField(null=True, blank=True)
     company_address = models.TextField()
     company_registration_no = models.TextField(null=True, blank=True)
@@ -140,10 +141,32 @@ class CompanyProfile(models.Model):
     admin_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="company_profile")
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
     tax_number = models.CharField(max_length=255, blank=True, null=True)
+    products = models.TextField(null=True, blank=True)
+    services = models.TextField(null=True, blank=True)
+    expertise = models.TextField(null=True, blank=True)
+    basyx_server_address = models.TextField(null=True, blank=True)
+    basyx_ui_endpoint_address = models.TextField(null=True, blank=True)
+    basyx_environment = models.TextField(null=True, blank=True)
 
 
     def __str__(self):
         return str(self.company_name)
+
+class BankDetail(models.Model):
+    company = models.ForeignKey(
+        CompanyProfile,
+        on_delete=models.CASCADE,
+        related_name="bank_details"
+    )
+    company_iban = models.TextField()
+    company_bank_name = models.TextField(null=True, blank=True)
+    company_bic = models.TextField(null=True, blank=True)
+    company_bank_address = models.TextField(null=True, blank=True)
+    company_postcode = models.TextField(null=True, blank=True)  # New field
+    company_town = models.TextField(null=True, blank=True)  # New field
+
+    def __str__(self):
+        return f"{self.company.company_name} - {self.company_bank_name or 'Bank'}"
 
 
 class Connection(models.Model):
