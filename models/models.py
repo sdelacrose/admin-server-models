@@ -137,7 +137,7 @@ class CompanyProfile(models.Model):
     company_bank_name = models.TextField(null=True,blank=True)
     company_bic = models.TextField(null=True, blank=True)
     company_bank_address = models.TextField(null=True, blank=True)
-    company_image = models.ImageField(upload_to="company_images", null=True, blank=True)
+    company_profile_image = models.TextField(null=True, blank=True)
     admin_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="company_profile")
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
     tax_number = models.CharField(max_length=255, blank=True, null=True)
