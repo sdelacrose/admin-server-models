@@ -53,6 +53,21 @@ class User(AbstractBaseUser, PermissionsMixin):
     post_code = models.CharField(max_length=500, null=True, blank=True)
     country = models.CharField(max_length=500, null=True, blank=True)
     license_allocated = models.BooleanField(default=False)
+    linkedin_profile = models.TextField(null=True, blank=True)
+    dob = models.DateField(null=True, blank=True)
+    professional_headline = models.TextField(null=True, blank=True)
+    industry = models.TextField(null=True, blank=True)
+    current_position = models.TextField(null=True, blank=True)
+    qualifications = models.TextField(null=True, blank=True)
+    keywords = models.TextField(null=True, blank=True)
+    availability_from = models.TimeField(null=True, blank=True)
+    availability_until = models.TimeField(null=True, blank=True)
+    availability_type = models.CharField(max_length=50, null=True, blank=True)
+    availability_location = models.TextField(null=True, blank=True)
+    availability_hours_per_week = models.IntegerField(null=True, blank=True)
+    resume = models.TextField(null=True, blank=True)
+
+
 
     preferred_language = models.CharField(
         max_length=50,
