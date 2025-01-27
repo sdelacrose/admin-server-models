@@ -66,9 +66,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     availability_location = models.TextField(null=True, blank=True)
     availability_hours_per_week = models.IntegerField(null=True, blank=True)
     resume = models.TextField(null=True, blank=True)
-    user_image = models.TextField(null=True, blank=True)
-    profile_image= models.TextField(null=True, blank=True)
-
 
 
     preferred_language = models.CharField(
