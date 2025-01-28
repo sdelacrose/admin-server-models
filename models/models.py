@@ -298,3 +298,8 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list
     )
+    project_priority_levels = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list
+    )
