@@ -304,3 +304,78 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list
     )
+
+class CompanyConfig(models.Model):
+    company_profile = models.OneToOneField(
+        CompanyProfile, on_delete=models.CASCADE, related_name='company_config'
+    )
+    contact_type = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    team_members_roles = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    area_of_expertise = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    funding_strategy = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    status_options = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    reminder_settings = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    invoice_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    general_tasks = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    expense_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    project_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    document_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    document_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    priority_levels = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list
+    )
+    project_priority_levels = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list
+    )
