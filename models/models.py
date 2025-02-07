@@ -307,7 +307,19 @@ class GlobalConfig(models.Model):
 
 class CompanyConfig(models.Model):
     company_profile = models.OneToOneField(
-        CompanyProfile, on_delete=models.CASCADE, related_name='company_config'
+        CompanyProfile, 
+        on_delete=models.CASCADE, 
+        related_name='company_config',
+        null=True,
+        blank=True
+    )
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="freelancer_config",
+        help_text="The freelancer this configuration belongs to."
     )
     contact_type = ArrayField(
         models.CharField(max_length=255),
