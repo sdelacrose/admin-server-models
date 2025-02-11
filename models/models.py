@@ -68,6 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     resume = models.TextField(null=True, blank=True)
     user_image = models.TextField(null=True, blank=True)
     user_searchable = models.BooleanField(default=False)
+    is_freetrial_availed = models.BooleanField(default=False)
 
     preferred_language = models.CharField(
         max_length=50,
@@ -162,6 +163,7 @@ class CompanyProfile(models.Model):
     basyx_server_address = models.TextField(null=True, blank=True)
     basyx_ui_endpoint_address = models.TextField(null=True, blank=True)
     basyx_environment = models.TextField(null=True, blank=True)
+    is_freetrial_availed = models.BooleanField(default=False)
 
 
     def __str__(self):
