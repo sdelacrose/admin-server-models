@@ -224,6 +224,23 @@ class ConnectionUser(models.Model):
         unique_together = ('connection', 'user')
 
 
+class Staff(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_profile')
+    supervisor = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name='subordinates'
+    )
+    salary = models.DecimalField(max_digits=20, decimal_places=2)
+    productivity_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    annual_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
+    weekly_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.email}"
+
+
 class GlobalConfig(models.Model):
     user = models.OneToOneField(
         User,
