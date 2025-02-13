@@ -225,7 +225,7 @@ class ConnectionUser(models.Model):
 
 
 class Staff(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff')
     supervisor = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
