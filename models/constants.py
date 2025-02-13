@@ -6,7 +6,7 @@ GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
 
 GC_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
 GC_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
-GC_INVOICE_STATUS = ["open", "due", "overdue", "paid"]
+GC_INVOICE_STATUS = ["open", "due", "overdue", "paid", "not paid"]
 GC_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 GC_STATUS_OPTIONS = ["open:#FF0000", "in progress:#FFFF00", "closed:#5CE75C"]
 GC_CONTACT_TYPES = ["client", "contractor", "authority", "consultant"]
