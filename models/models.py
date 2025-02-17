@@ -164,6 +164,7 @@ class CompanyProfile(models.Model):
     basyx_ui_endpoint_address = models.TextField(null=True, blank=True)
     basyx_environment = models.TextField(null=True, blank=True)
     is_freetrial_availed = models.BooleanField(default=False)
+    currency = models.CharField(max_length=100, blank=True, null=True, default="€")
 
 
     def __str__(self):
