@@ -324,6 +324,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list
     )
+    calendar_event_status_options = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
 
 class CompanyConfig(models.Model):
     company_profile = models.OneToOneField(
@@ -410,4 +415,9 @@ class CompanyConfig(models.Model):
         models.CharField(max_length=255),
         blank=True,
         default=list
+    )
+    calendar_event_status_options = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
     )
