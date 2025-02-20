@@ -242,6 +242,13 @@ class Staff(models.Model):
         return f"{self.user.email}"
 
 
+class UserOutlookCredentials(models.Model):
+    user = models.OneToOneField(User, related_name="outlook_credentials", on_delete=models.CASCADE)
+    outlook_access_token = models.TextField(null=True, blank=True)
+    outlook_refresh_token = models.TextField(null=True, blank=True)
+    outlook_token_expires = models.DateTimeField(null=True, blank=True)
+
+
 class GlobalConfig(models.Model):
     user = models.OneToOneField(
         User,
