@@ -19,3 +19,4 @@ GC_FUNDING_STRATEGY = [
                 "GEG Energy efficient Building 85", "GEG Energy efficient Building 85 EE",
                 "BEG single" ,"BEG EinzelmaBnahme + iSFP", "iSPF"
             ]
+GC_CALENDAR_EVENT_STATUS_OPTIONS = ["open", "in progress", "closed"]
