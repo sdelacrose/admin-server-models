@@ -87,6 +87,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     user_type = models.CharField(
         max_length=20, choices=USER_TYPE_CHOICES, null=True, blank=True
     )
+    outlook_access_token = models.TextField(null=True, blank=True)
+    outlook_refresh_token = models.TextField(null=True, blank=True)
+    outlook_token_expires = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
