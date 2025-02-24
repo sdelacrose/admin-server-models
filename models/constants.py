@@ -1,3 +1,9 @@
+SHAREMUNDO_SOLUTION_TYPES = (
+    ('Core Solution', 'Core Solution'),
+    ('Basic Solution', 'Basic Solution'),
+    ('Energy Consultant Solution', 'Energy Consultant Solution')
+)
+
 GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
 GC_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review"]
