@@ -261,7 +261,7 @@ class GlobalConfig(models.Model):
     company_profile = models.OneToOneField(
         CompanyProfile, on_delete=models.CASCADE, related_name='global_config', default=None, null=True
     )
-    contact_type = ArrayField(
+    contract_type = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
@@ -353,7 +353,7 @@ class CompanyConfig(models.Model):
         related_name="freelancer_config",
         help_text="The freelancer this configuration belongs to."
     )
-    contact_type = ArrayField(
+    contract_type = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
