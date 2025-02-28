@@ -236,6 +236,7 @@ class Staff(models.Model):
     salary = models.DecimalField(max_digits=20, decimal_places=2)
     productivity_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     annual_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
+    wfh_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     weekly_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
@@ -336,6 +337,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    leave_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
 
 class CompanyConfig(models.Model):
     company_profile = models.OneToOneField(
@@ -424,6 +430,11 @@ class CompanyConfig(models.Model):
         default=list
     )
     calendar_event_status_options = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    leave_types = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
