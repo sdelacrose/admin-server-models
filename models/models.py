@@ -123,6 +123,8 @@ class FreelancerProfile(models.Model):
     iban = models.CharField(max_length=255)
     bic = models.CharField(max_length=255)
     bank_address = models.TextField()
+    currency = models.CharField(max_length=100, blank=True, null=True, default="€")
+
 
 
 class BlockedToken(models.Model):
