@@ -123,6 +123,8 @@ class FreelancerProfile(models.Model):
     iban = models.CharField(max_length=255)
     bic = models.CharField(max_length=255)
     bank_address = models.TextField()
+    currency = models.CharField(max_length=100, blank=True, null=True, default="€")
+
 
 
 class BlockedToken(models.Model):
@@ -238,6 +240,7 @@ class Staff(models.Model):
     annual_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     wfh_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     weekly_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    hourly_rate = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=75)
 
     def __str__(self):
         return f"{self.user.email}"
