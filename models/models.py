@@ -238,6 +238,7 @@ class Staff(models.Model):
     annual_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     wfh_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     weekly_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    hourly_rate = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=75)
 
     def __str__(self):
         return f"{self.user.email}"
