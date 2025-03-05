@@ -165,6 +165,9 @@ class CompanyProfile(models.Model):
     basyx_server_address = models.TextField(null=True, blank=True)
     basyx_ui_endpoint_address = models.TextField(null=True, blank=True)
     basyx_environment = models.TextField(null=True, blank=True)
+    nace_code_one = models.TextField(null=True, blank=True)
+    nace_code_two = models.TextField(null=True, blank=True)
+    nace_code_three = models.TextField(null=True, blank=True)
     is_freetrial_availed = models.BooleanField(default=False)
     currency = models.CharField(max_length=100, blank=True, null=True, default="€")
 
