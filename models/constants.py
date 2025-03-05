@@ -26,4 +26,4 @@ GC_FUNDING_STRATEGY = [
                 "BEG single" ,"BEG EinzelmaBnahme + iSFP", "iSPF"
             ]
 GC_CALENDAR_EVENT_STATUS_OPTIONS = ["open", "in progress", "closed"]
-GC_LEAVE_TYPES = ['Sick', 'Annual', 'Work From Home']
+GC_LEAVE_TYPES = ['Paid', 'Sick', 'Unpaid', 'Casual']
