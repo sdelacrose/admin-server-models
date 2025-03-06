@@ -348,6 +348,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    opportunity_sales_phase = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
 
 class CompanyConfig(models.Model):
     company_profile = models.OneToOneField(
@@ -441,6 +446,11 @@ class CompanyConfig(models.Model):
         default=list,
     )
     leave_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    opportunity_sales_phase = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
