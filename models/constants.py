@@ -27,3 +27,5 @@ GC_FUNDING_STRATEGY = [
             ]
 GC_CALENDAR_EVENT_STATUS_OPTIONS = ["open", "in progress", "closed"]
 GC_LEAVE_TYPES = ['Paid', 'Sick', 'Unpaid', 'Casual']
+GC_OPPORTUNITY_SALES_PHASE = ["Identification", "Qualification", "Offer Preparation",
+                              "Offer Approval", "Offer Negotiation", "Contracting", "Closed"]
