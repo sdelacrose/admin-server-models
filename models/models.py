@@ -249,6 +249,19 @@ class Staff(models.Model):
         return f"{self.user.email}"
 
 
+class StaffConfiguration(models.Model):
+    company_profile = models.OneToOneField(CompanyProfile, on_delete=models.CASCADE, related_name="staff_configuration", null=True, blank=True)
+    freelancer = models.OneToOneField(User, on_delete=models.CASCADE, related_name="staff_configuration", null=True, blank=True)
+    number_of_hours = models.IntegerField()
+    number_of_leaves = models.IntegerField()
+    number_of_wfh_leaves = models.IntegerField()
+    hourly_rate = models.IntegerField()
+    base_salary = models.FloatField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 class UserOutlookCredentials(models.Model):
     user = models.OneToOneField(User, related_name="outlook_credentials", on_delete=models.CASCADE)
     outlook_access_token = models.TextField(null=True, blank=True)
