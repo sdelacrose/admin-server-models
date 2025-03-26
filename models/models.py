@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
-
+from django.contrib.postgres.indexes import HashIndex
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -468,3 +468,36 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
+
+class AuditLog(models.Model):
+    ACTION_CHOICES = [
+        ('CREATE', 'Created'),
+        ('UPDATE', 'Updated'),
+        ('DELETE', 'Deleted'),
+        ('ARCHIVE', 'Archived'),
+        ('RESTORE', 'Restored'),
+        ('ASSIGN', 'Assigned'),
+        ('SHARE', 'Shared'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='user_audit_logs')
+    company_profile = models.ForeignKey(CompanyProfile, on_delete=models.SET_NULL, null=True, related_name='company_audit_logs')
+    freelancer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='freelancer_audit_logs')
+    
+    action = models.CharField(max_length=50, choices=ACTION_CHOICES)
+    timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+    
+    target_model = models.CharField(max_length=50)
+    target_id = models.PositiveIntegerField()
+    target_name = models.CharField(max_length=255, help_text="Name/title of the target object")
+    
+    action_details = models.JSONField(default=dict, help_text="Structured data about the action")
+    
+    class Meta:
+        indexes = [
+            models.Index(fields=['target_model', 'target_id']),
+            models.Index(fields=['timestamp']),
+            HashIndex(fields=['target_model']),
+            models.Index(fields=['user']),
+        ]
+
