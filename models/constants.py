@@ -1,6 +1,6 @@
 SHAREMUNDO_SOLUTION_TYPES = (
     ('Core Solution', 'Core Solution'),
-    ('Basic Solution', 'Enterprise Solution'),
+    ('Enterprise Solution', 'Enterprise Solution'),
     ('Energy Consultant Solution', 'Energy Consultant Solution')
 )
 
