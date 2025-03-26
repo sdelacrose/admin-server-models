@@ -5,7 +5,8 @@ SHAREMUNDO_SOLUTION_TYPES = (
 )
 
 GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
-GC_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
+GC_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification",
+                     "Funding Request", "Confirmation of Receipt", "Funding Authorisation"]
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
@@ -26,4 +27,6 @@ GC_FUNDING_STRATEGY = [
                 "BEG single" ,"BEG EinzelmaBnahme + iSFP", "iSPF"
             ]
 GC_CALENDAR_EVENT_STATUS_OPTIONS = ["open", "in progress", "closed"]
-GC_LEAVE_TYPES = ['Sick', 'Annual', 'Work From Home']
+GC_LEAVE_TYPES = ['Paid', 'Sick', 'Unpaid', 'Casual']
+GC_OPPORTUNITY_SALES_PHASE = ["Identification", "Qualification", "Offer Preparation",
+                              "Offer Approval", "Offer Negotiation", "Contracting", "Closed"]
