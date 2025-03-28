@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
-
+from .constants import SHAREMUNDO_SOLUTION_TYPES
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -368,14 +368,16 @@ class GlobalConfig(models.Model):
     )
 
 class CompanyConfig(models.Model):
-    company_profile = models.OneToOneField(
+    solution = models.CharField(max_length=255, choices=SHAREMUNDO_SOLUTION_TYPES, default="Energy Consultant Solution")
+
+    company_profile = models.ForeignKey(
         CompanyProfile, 
         on_delete=models.CASCADE, 
         related_name='company_config',
         null=True,
         blank=True
     )
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         null=True,
@@ -468,3 +470,5 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
+    class Meta:
+        unique_together = ('company_profile', 'user', 'solution')
