@@ -7,7 +7,7 @@ SHAREMUNDO_SOLUTION_TYPES = (
 GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
 GC_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification",
                      "Funding Request", "Confirmation of Receipt", "Funding Authorisation"]
-GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review"]
+GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
 
@@ -40,7 +40,7 @@ CORE_INVOICE_STATUS = ["open", "due", "overdue", "paid", "not paid"]
 CORE_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 CORE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
 CORE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
-CORE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review"]
+CORE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
 
 # Enterprise Solution Constants
@@ -54,4 +54,4 @@ ENTERPRISE_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 ENTERPRISE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
 ENTERPRISE_PROJECT_TYPES = ["Implementation", "Migration", "Integration", "Other"]
 ENTERPRISE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
-ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review"]
+ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
