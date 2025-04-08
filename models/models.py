@@ -238,12 +238,12 @@ class Staff(models.Model):
         null=True, blank=True,
         related_name='subordinates'
     )
-    salary = models.DecimalField(max_digits=20, decimal_places=2)
+    salary = models.FloatField()
     productivity_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     annual_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     wfh_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     weekly_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
-    hourly_rate = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=75)
+    hourly_rate = models.FloatField(null=True, blank=True, default=75)
 
     def __str__(self):
         return f"{self.user.email}"
