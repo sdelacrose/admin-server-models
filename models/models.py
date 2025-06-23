@@ -472,3 +472,170 @@ class CompanyConfig(models.Model):
     )
     class Meta:
         unique_together = ('company_profile', 'user', 'solution')
+
+class Feedback(models.Model):
+    FEEDBACK_TYPES = [
+        ('suggestion', 'Suggestion'),
+        ('incident', 'Incident'),
+        ('bug', 'Bug'),
+        ('improvement', 'Improvement Request')
+    ]
+    
+    STATUS_CHOICES = [
+        ('open', 'Open'),
+        ('incident_created', 'Incident Created'),
+        ('improvement_created', 'Improvement Created'),
+        ('no_action', 'No Action Requested'),
+        ('closed', 'Closed'),
+        ('archived', 'Archived'),
+    ]
+
+    # Meta Information
+    company_profile = models.ForeignKey(
+        CompanyProfile, 
+        on_delete=models.CASCADE, 
+        related_name='feedbacks', 
+        null=True, 
+        blank=True,
+        help_text="User's Company (Ignore if freelancer)"
+    )
+    solution_name = models.CharField(
+        max_length=255,
+        help_text="Name of the solution"
+    )
+    user = models.ForeignKey(   
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='feedbacks',
+        help_text="User who created the feedback",
+        null=True,
+        blank=True,
+    )
+    project = models.IntegerField(null=True, blank=True, help_text="Project ID (if it's regarding project)")
+    project_name = models.CharField(max_length=255, null=True, blank=True, help_text="Project Name (if it's regarding project)")
+    project_team_role = models.CharField(
+        max_length=255, 
+        null=True, 
+        blank=True,
+        help_text="Project Team Member Role (if it's regarding project)"
+    )
+
+
+
+    # Feedback Details
+    feedback_type = models.CharField(
+        max_length=50, 
+        choices=FEEDBACK_TYPES,
+        help_text="Type of feedback (Suggestion/incident/bug/improvement request)"
+    )
+    description = models.TextField(
+        help_text="Description of the feedback"
+    )
+    status = models.CharField(
+        max_length=50, 
+        choices=STATUS_CHOICES, 
+        default='open',
+        help_text="Status of the feedback (Open/Incident created/Improvement created/No action requested/Closed)"
+    )
+    answer_required = models.BooleanField(
+        default=True,
+        help_text="Whether an answer is required for this feedback"
+    )
+
+    # Attachments
+    attachments = ArrayField(
+        models.CharField(max_length=1000),
+        blank=True,
+        null=True,
+        default=list,
+    )
+    
+    # Admin Response
+    admin_response = models.TextField(
+        null=True, 
+        blank=True,
+        help_text="Response from Sharemundo admin"
+    )
+    responded_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        related_name='responded_feedbacks', 
+        null=True, 
+        blank=True,
+        help_text="Sharemundo admin who responded"
+    )
+    response_date = models.DateTimeField(
+        null=True, 
+        blank=True,
+        help_text="Date when admin responded"
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="When the feedback was created"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="When the feedback was last updated"
+    )
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Feedback"
+        verbose_name_plural = "Feedbacks"
+        indexes = [
+            models.Index(fields=['created_at']),
+            models.Index(fields=['status']),
+            models.Index(fields=['feedback_type']),
+            models.Index(fields=['company_profile']),
+            models.Index(fields=['user']),
+        ]
+
+    def __str__(self):
+        return f"Feedback #{self.id} - {self.feedback_type}"
+
+    def save(self, *args, **kwargs):
+        # If status is changed to 'closed', ensure response_date is set
+        if self.status == 'closed' and not self.response_date:
+            self.response_date = timezone.now()
+        super().save(*args, **kwargs)
+
+class FeedbackResponse(models.Model):
+    feedback = models.ForeignKey(
+        Feedback,
+        on_delete=models.CASCADE,
+        related_name='responses',
+        help_text="The feedback this response belongs to"
+    )
+    response = models.TextField(
+        help_text="Response from Sharemundo admin"
+    )
+    responded_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name='feedback_responses',
+        null=True,
+        help_text="Sharemundo admin who responded"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="When the response was created"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        help_text="When the response was last updated"
+    )
+
+    class Meta:
+        ordering = ['created_at']
+        verbose_name = "Feedback Response"
+        verbose_name_plural = "Feedback Responses"
+        indexes = [
+            models.Index(fields=['feedback']),
+            models.Index(fields=['created_at']),
+            models.Index(fields=['responded_by']),
+        ]
+
+    def __str__(self):
+        return f"Response to Feedback #{self.feedback.id} by {self.responded_by}"
