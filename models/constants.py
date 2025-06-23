@@ -1,3 +1,5 @@
+from enum import Enum
+
 SHAREMUNDO_SOLUTION_TYPES = (
     ('Core Solution', 'Core Solution'),
     ('Enterprise Solution', 'Enterprise Solution'),
@@ -55,3 +57,11 @@ ENTERPRISE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "othe
 ENTERPRISE_PROJECT_TYPES = ["Implementation", "Migration", "Integration", "Other"]
 ENTERPRISE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
 ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
+
+class FeedbackStatusType(Enum):
+    OPEN = "open"
+    INCIDENT_CREATED = "incident_created"
+    IMPROVEMENT_CREATED = "improvement_created"
+    NO_ACTION_REQUESTED = "no_action_requested"
+    CLOSED = "closed"
+    ARCHIVED = "archived"
