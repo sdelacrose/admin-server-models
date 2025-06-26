@@ -366,6 +366,16 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    project_service_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    purchase_order_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
 
 class CompanyConfig(models.Model):
     solution = models.CharField(max_length=255, choices=SHAREMUNDO_SOLUTION_TYPES, default="Energy Consultant Solution")
@@ -466,6 +476,16 @@ class CompanyConfig(models.Model):
         default=list,
     )
     opportunity_sales_phase = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    project_service_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    purchase_order_status = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
