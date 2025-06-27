@@ -32,7 +32,7 @@ GC_CALENDAR_EVENT_STATUS_OPTIONS = ["open", "in progress", "closed"]
 GC_LEAVE_TYPES = ['Paid', 'Sick', 'Unpaid', 'Casual']
 GC_OPPORTUNITY_SALES_PHASE = ["Identification", "Qualification", "Offer Preparation",
                               "Offer Approval", "Offer Negotiation", "Contracting", "Closed"]
-GC_PURCHASE_ORDER_STATUS = ["draft", "under_approval", "approved", "issued", "closed", "cancelled"]
+GC_PURCHASE_ORDER_STATUS = ["Draft", "Under Approval", "Approved", "Issued", "Closed", "Cancelled"]
 GC_PROJECT_SERVICE_TYPES = []
 
 # Core Solution Constants
