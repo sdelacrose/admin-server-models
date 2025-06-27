@@ -376,6 +376,16 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    document_categories = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    document_disciplines = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
 
 class CompanyConfig(models.Model):
     solution = models.CharField(max_length=255, choices=SHAREMUNDO_SOLUTION_TYPES, default="Energy Consultant Solution")
@@ -490,6 +500,17 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
+    document_categories = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    document_disciplines = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+
     class Meta:
         unique_together = ('company_profile', 'user', 'solution')
 
