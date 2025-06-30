@@ -7,8 +7,8 @@ SHAREMUNDO_SOLUTION_TYPES = (
 )
 
 GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
-GC_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification",
-                     "Funding Request", "Confirmation of Receipt", "Funding Authorisation"]
+GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE",
+                     "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FUA"] + ["Drawing:DRW", "Specification:SPE", "Report:RPT", "Calendar:CAL", "Manual:MAN", "Procedure:PRO", "Revision:REV", "Other:OTH "]
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
@@ -34,6 +34,10 @@ GC_OPPORTUNITY_SALES_PHASE = ["Identification", "Qualification", "Offer Preparat
                               "Offer Approval", "Offer Negotiation", "Contracting", "Closed"]
 GC_PURCHASE_ORDER_STATUS = ["Draft", "Under Approval", "Approved", "Issued", "Closed", "Cancelled"]
 GC_PROJECT_SERVICE_TYPES = []
+
+# Document Numbering System Constants
+GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Calendar:CAL", "Manual:MAN", "Procedure:PRO", "Revision:REV", "Other:OTH"]
+GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
 
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#FF0000", "in progress:#FFFF00", "closed:#5CE75C"]
