@@ -8,7 +8,7 @@ SHAREMUNDO_SOLUTION_TYPES = (
 
 GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
 GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE",
-                     "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FUA"] + ["Drawing:DRW", "Specification:SPE", "Report:RPT", "Calendar:CAL", "Manual:MAN", "Procedure:PRO", "Revision:REV", "Other:OTH"]
+                     "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FUA"] + ["Drawing:DRW", "Report:RPT", "Calendar:CAL", "Manual:MAN", "Procedure:PRO", "Revision:REV", "Other:OTH"]
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
