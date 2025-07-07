@@ -680,3 +680,41 @@ class FeedbackResponse(models.Model):
 
     def __str__(self):
         return f"Response to Feedback #{self.feedback.id} by {self.responded_by}"
+
+class Preference(models.Model):
+    TYPE_CHOICES = (
+        ('action_item', 'Action Item'),
+        ('project', 'Project'),
+        ('time_expense', 'Time/Expense'),
+        ('documents', 'Documents'),
+        ('milestone', 'Milestone'),
+        ('folder', 'Folder'),
+        ('invoice', 'Invoice'),
+        ('time_card', 'Time Card'),
+        ('expense_card', 'Expense Card'),
+        ('purchase_order', 'Purchase Order'),
+        ('project_funding', 'Project Funding'),
+        ('project_phase', 'Project Phase'),
+        ('object_assessment', 'Object Assessment'),
+        ('project_team', 'Project Team'),
+        ('project_external_user', 'Project External User'),
+        ('ecpmp_config', 'ECPMP Config'),
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='preference')
+    notify_item_created_by_me = models.BooleanField(default=False)
+    notify_item_i_own = models.BooleanField(default=False)
+    notify_item_am_part = models.BooleanField(default=False)
+    specific_notify_item_i_own      = ArrayField(
+        base_field=models.CharField(max_length=25, choices=TYPE_CHOICES),
+        default=list,
+        blank=True,
+        null=True,
+    )
+    specific_notify_item_am_part_of = ArrayField(
+        base_field=models.CharField(max_length=25, choices=TYPE_CHOICES),
+        default=list,
+        blank=True,
+        null=True,
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
