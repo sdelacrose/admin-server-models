@@ -6,6 +6,44 @@ SHAREMUNDO_SOLUTION_TYPES = (
     ('Energy Consultant Solution', 'Energy Consultant Solution')
 )
 
+ADMIN_SERVER_MODULES = [
+    "connections",
+    "users",
+    "solutions",
+    "licenses",
+    "billing",
+    "global_configurations",
+    "company_profile",
+    "roles",
+]
+
+SOLUTION_MODULES = [
+    "notice_board",
+    "projects",
+    "project",
+    "action_item",
+    "documents",
+    "time_booking",
+    "expense_booking",
+    "invoices",
+    "resources",
+    "contact_management",
+    "opportunity_offers",
+    "calendar_events",
+    "company_configurations",
+]
+
+PROJECT_MODULES = [
+    "action_item",
+    "documents",
+    "object_assessments",
+    "site_reporting",
+    "funding",
+    "phases_management",
+    "milestone_management",
+    "ecpmp_configurations",
+]
+
 GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
 GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE",
                      "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FUA"] + ["Drawing:DRW", "Report:RPT", "Calendar:CAL", "Manual:MAN", "Procedure:PRO", "Revision:REV", "Other:OTH"]

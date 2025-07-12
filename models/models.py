@@ -718,3 +718,122 @@ class Preference(models.Model):
     )
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Permission(models.Model):
+    """
+    Permissions table to store all available permissions
+    """
+    key = models.CharField(max_length=255, unique=True, help_text="Permission key (e.g., action_item.view)")
+    name = models.CharField(max_length=255, help_text="Human readable permission name")
+    description = models.TextField(blank=True, null=True, help_text="Permission description")
+    module = models.CharField(max_length=100, help_text="Module this permission belongs to (e.g., action_item, document)")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['module', 'key']
+        indexes = [
+            models.Index(fields=['key']),
+            models.Index(fields=['module']),
+        ]
+
+    def __str__(self):
+        return f"{self.key} - {self.name}"
+
+class Role(models.Model):
+    """
+    Roles table to store admin_server and solution level roles
+    """
+    name = models.CharField(max_length=255, help_text="Role name")
+    description = models.TextField(blank=True, null=True, help_text="Role description")
+    company = models.ForeignKey(
+        CompanyProfile, 
+        on_delete=models.CASCADE, 
+        related_name='roles',
+        help_text="Company this role belongs to"
+    )
+    type = models.CharField(
+        max_length=20,
+        choices=[('admin_server', 'Admin Server'), ('solution', 'Solution')],
+        help_text="Type of role - admin_server or solution"
+    )
+    scope = models.CharField(
+        max_length=20, 
+        choices=[('company', 'Company'), ('project', 'Project')],
+        help_text="Scope of this role"
+    )
+    is_default = models.BooleanField(
+        default=False, 
+        help_text="Whether this is a default role created by the system"
+    )
+    is_active = models.BooleanField(default=True, help_text="Whether this role is active")
+    created_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        related_name='created_roles',
+        null=True, 
+        blank=True,
+        help_text="User who created this role"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('name', 'company', 'type', 'scope')
+        ordering = ['type', 'name']
+        indexes = [
+            models.Index(fields=['company']),
+            models.Index(fields=['type']),
+            models.Index(fields=['scope']),
+            models.Index(fields=['is_default']),
+            models.Index(fields=['is_active']),
+        ]
+
+    def __str__(self):
+        return f"{self.name} ({self.type} - {self.scope}) - {self.company.company_name}"
+
+class RolePermission(models.Model):
+    """
+    Junction table to link roles with permissions
+    """
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='role_permissions')
+    permission = models.ForeignKey(Permission, on_delete=models.CASCADE, related_name='role_permissions')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('role', 'permission')
+        indexes = [
+            models.Index(fields=['role']),
+            models.Index(fields=['permission']),
+        ]
+
+    def __str__(self):
+        return f"{self.role.name} - {self.permission.key}"
+
+class UserRole(models.Model):
+    """
+    Junction table to assign roles to users with scope
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_company_roles')
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='user_company_roles')
+    company = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='user_company_roles', null=True, blank=True)
+    assigned_by = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        related_name='assigned_company_roles',
+        null=True, 
+        blank=True,
+        help_text="User who assigned this role"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'role')
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['role']),
+        ]
+
+    def __str__(self):
+        return f"{self.user.email} - {self.role.name}"
