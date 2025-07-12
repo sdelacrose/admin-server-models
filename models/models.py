@@ -716,6 +716,7 @@ class Preference(models.Model):
         blank=True,
         null=True,
     )
+    email_check = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
