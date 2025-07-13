@@ -735,6 +735,8 @@ class Permission(models.Model):
         indexes = [
             models.Index(fields=['key']),
             models.Index(fields=['module']),
+            # Add composite indexes for common filter combinations
+            models.Index(fields=['module', 'key']),
         ]
 
     def __str__(self):
@@ -787,6 +789,9 @@ class Role(models.Model):
             models.Index(fields=['scope']),
             models.Index(fields=['is_default']),
             models.Index(fields=['is_active']),
+            # Add composite indexes for common filter combinations
+            models.Index(fields=['type', 'scope']),
+            models.Index(fields=['company', 'type', 'scope']),
         ]
 
     def __str__(self):
@@ -805,6 +810,8 @@ class RolePermission(models.Model):
         indexes = [
             models.Index(fields=['role']),
             models.Index(fields=['permission']),
+            # Add composite indexes for role filtering
+            models.Index(fields=['role', 'permission']),
         ]
 
     def __str__(self):
