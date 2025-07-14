@@ -25,7 +25,7 @@ SOLUTION_MODULES = [
     "documents",
     "time_booking",
     "expense_booking",
-    "invoices",
+    "invoice",
     "resources",
     "contact_management",
     "opportunity_offers",
