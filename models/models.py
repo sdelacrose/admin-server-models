@@ -101,6 +101,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return str(self.email)
 
+    def save(self, *args, **kwargs):
+        if self.is_deleted and not self.deleted_at:
+            self.deleted_at = timezone.now()
+
+        super().save(*args, **kwargs)
+
     @property
     def is_freelancer(self):
         """
