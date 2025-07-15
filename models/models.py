@@ -865,10 +865,6 @@ class Notification(models.Model):
     object_id = models.PositiveIntegerField(db_index=True)
     target = GenericForeignKey('content_type', 'object_id')
 
-    def __str__(self):
-        return f"{self.user} → {self.message[:20]}… [{self.content_type.model}:{self.object_id}]"
-    
-
 class NotificationSeen(models.Model):
     STATUS_CHOICES = (
         ('unread', 'Unread'),
