@@ -40,6 +40,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)
+    is_permanently_deleted = models.BooleanField(default=False) 
+    permanently_deleted_at = models.DateTimeField(null=True, blank=True) 
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -98,6 +100,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return str(self.email)
+
+    def save(self, *args, **kwargs):
+        if self.is_deleted and not self.deleted_at:
+            self.deleted_at = timezone.now()
+
+        super().save(*args, **kwargs)
 
     @property
     def is_freelancer(self):
