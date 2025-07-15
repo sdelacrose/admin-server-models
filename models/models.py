@@ -4,6 +4,9 @@ from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+
 from .constants import SHAREMUNDO_SOLUTION_TYPES
 
 class CustomUserManager(BaseUserManager):
@@ -853,3 +856,50 @@ class UserRole(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.role.name}"
+
+
+class Notification(models.Model):
+    TYPE_CHOICES = (
+        ('create', 'Create'),
+        ('update', 'Update'),
+        ('delete', 'Delete'),
+    )
+    user = models.ManyToManyField(User, related_name='notifications', blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    important = models.BooleanField(default=False)
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField(db_index=True)
+    target = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f"{self.user} → {self.message[:20]}… [{self.content_type.model}:{self.object_id}]"
+    
+
+class NotificationSeen(models.Model):
+    STATUS_CHOICES = (
+        ('unread', 'Unread'),
+        ('read',   'Read'),
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='notification_recipients'
+    )
+    notification = models.ForeignKey(
+        Notification,
+        on_delete=models.CASCADE,
+        related_name='recipient_statuses'
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        unique_together = ('user', 'notification')
+
+    def __str__(self):
+        return f"{self.user} → {self.notification.id} [{self.status}]"
