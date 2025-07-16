@@ -362,11 +362,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list
     )
-    calendar_event_status_options = ArrayField(
-        models.CharField(max_length=255),
-        blank=True,
-        default=list,
-    )
+    # calendar_event_status_options = ArrayField(
+    #     models.CharField(max_length=255),
+    #     blank=True,
+    #     default=list,
+    # )
     leave_types = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -486,11 +486,11 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list
     )
-    calendar_event_status_options = ArrayField(
-        models.CharField(max_length=255),
-        blank=True,
-        default=list,
-    )
+    # calendar_event_status_options = ArrayField(
+    #     models.CharField(max_length=255),
+    #     blank=True,
+    #     default=list,
+    # )
     leave_types = ArrayField(
         models.CharField(max_length=255),
         blank=True,
