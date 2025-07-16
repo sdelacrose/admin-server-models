@@ -903,3 +903,40 @@ class NotificationSeen(models.Model):
 
     def __str__(self):
         return f"{self.user} → {self.notification.id} [{self.status}]"
+
+
+
+class APITestRun(models.Model):
+    STATUS_CHOICES = [
+        ('started', 'Started'),
+        ('finished', 'Finished'),
+        ('failed', 'Failed'),
+    ]
+
+    started_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='started'
+    )
+
+    def __str__(self):
+        return f"Run {self.id} - {self.status}"
+
+
+
+class APITestResult(models.Model):
+    file = models.CharField(max_length=255)
+    checked_at = models.DateTimeField()
+    results = models.JSONField()
+
+    api_test_run = models.ForeignKey(
+        'APITestRun',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return f"Result for {self.file} at {self.checked_at}"
