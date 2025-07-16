@@ -514,7 +514,7 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
-
+    tracker = FieldTracker()
     class Meta:
         unique_together = ('company_profile', 'user', 'solution')
 
