@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from model_utils import FieldTracker
 
 from .constants import SHAREMUNDO_SOLUTION_TYPES
 
@@ -181,7 +182,7 @@ class CompanyProfile(models.Model):
     nace_code_three = models.TextField(null=True, blank=True)
     is_freetrial_availed = models.BooleanField(default=False)
     currency = models.CharField(max_length=100, blank=True, null=True, default="€")
-
+    tracker = FieldTracker()
 
     def __str__(self):
         return str(self.company_name)
@@ -236,6 +237,7 @@ class ConnectionUser(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    tracker = FieldTracker()
 
     class Meta:
         unique_together = ('connection', 'user')
@@ -255,7 +257,7 @@ class Staff(models.Model):
     wfh_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     weekly_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     hourly_rate = models.FloatField(null=True, blank=True, default=75)
-
+    tracker = FieldTracker()
     def __str__(self):
         return f"{self.user.email}"
 
@@ -622,6 +624,7 @@ class Feedback(models.Model):
         auto_now=True,
         help_text="When the feedback was last updated"
     )
+    tracker = FieldTracker()
 
     class Meta:
         ordering = ['-created_at']
@@ -669,7 +672,7 @@ class FeedbackResponse(models.Model):
         auto_now=True,
         help_text="When the response was last updated"
     )
-
+    tracker = FieldTracker() 
     class Meta:
         ordering = ['created_at']
         verbose_name = "Feedback Response"
