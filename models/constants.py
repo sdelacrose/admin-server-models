@@ -69,7 +69,6 @@ GC_FUNDING_STRATEGY = [
                 "GEG Energy efficient Building 85", "GEG Energy efficient Building 85 EE",
                 "BEG single" ,"BEG EinzelmaBnahme + iSFP", "iSPF"
             ]
-GC_CALENDAR_EVENT_STATUS_OPTIONS = ["open", "in progress", "closed"]
 GC_LEAVE_TYPES = ['Paid', 'Sick', 'Unpaid', 'Casual']
 GC_OPPORTUNITY_SALES_PHASE = ["Identification", "Qualification", "Offer Preparation",
                               "Offer Approval", "Offer Negotiation", "Contracting", "Closed"]
@@ -77,7 +76,7 @@ GC_PURCHASE_ORDER_STATUS = ["Draft", "Under Approval", "Approved", "Issued", "Cl
 GC_PROJECT_SERVICE_TYPES = []
 
 # Document Numbering System Constants
-GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Calendar:CAL", "Manual:MAN", "Procedure:PRO", "Revision:REV", "Other:OTH"]
+GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC",  "Manual:MAN", "Procedure:PRO", "Other:OTH"]
 GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
 
 # Core Solution Constants
