@@ -20,13 +20,15 @@ ADMIN_SERVER_MODULES = [
 SOLUTION_MODULES = [
     "notice_board",
     "projects",
-    "project",
     "action_item",
     "documents",
     "time_booking",
     "expense_booking",
     "invoice",
     "resources",
+    "leave_request",
+    "staff_observation",
+    "staff_management",
     "contact_management",
     "opportunity_offers",
     "calendar_events",
@@ -34,6 +36,7 @@ SOLUTION_MODULES = [
 ]
 
 PROJECT_MODULES = [
+    "project",
     "action_item",
     "documents",
     "object_assessments",
