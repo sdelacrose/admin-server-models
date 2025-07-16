@@ -4,6 +4,9 @@ from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+
 from .constants import SHAREMUNDO_SOLUTION_TYPES
 
 class CustomUserManager(BaseUserManager):
@@ -40,6 +43,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)
     deleted_at = models.DateTimeField(null=True, blank=True)
+    is_permanently_deleted = models.BooleanField(default=False) 
+    permanently_deleted_at = models.DateTimeField(null=True, blank=True) 
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -98,6 +103,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return str(self.email)
+
+    def save(self, *args, **kwargs):
+        if self.is_deleted and not self.deleted_at:
+            self.deleted_at = timezone.now()
+
+        super().save(*args, **kwargs)
 
     @property
     def is_freelancer(self):
@@ -716,6 +727,7 @@ class Preference(models.Model):
         blank=True,
         null=True,
     )
+    email_check = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -735,6 +747,8 @@ class Permission(models.Model):
         indexes = [
             models.Index(fields=['key']),
             models.Index(fields=['module']),
+            # Add composite indexes for common filter combinations
+            models.Index(fields=['module', 'key']),
         ]
 
     def __str__(self):
@@ -787,6 +801,9 @@ class Role(models.Model):
             models.Index(fields=['scope']),
             models.Index(fields=['is_default']),
             models.Index(fields=['is_active']),
+            # Add composite indexes for common filter combinations
+            models.Index(fields=['type', 'scope']),
+            models.Index(fields=['company', 'type', 'scope']),
         ]
 
     def __str__(self):
@@ -805,6 +822,8 @@ class RolePermission(models.Model):
         indexes = [
             models.Index(fields=['role']),
             models.Index(fields=['permission']),
+            # Add composite indexes for role filtering
+            models.Index(fields=['role', 'permission']),
         ]
 
     def __str__(self):
@@ -837,6 +856,53 @@ class UserRole(models.Model):
 
     def __str__(self):
         return f"{self.user.email} - {self.role.name}"
+
+
+class Notification(models.Model):
+    TYPE_CHOICES = (
+        ('create', 'Create'),
+        ('update', 'Update'),
+        ('delete', 'Delete'),
+    )
+    user = models.ManyToManyField(User, related_name='notifications', blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    important = models.BooleanField(default=False)
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField(db_index=True)
+    target = GenericForeignKey('content_type', 'object_id')
+
+    def __str__(self):
+        return f"{self.user} → {self.message[:20]}… [{self.content_type.model}:{self.object_id}]"
+    
+
+class NotificationSeen(models.Model):
+    STATUS_CHOICES = (
+        ('unread', 'Unread'),
+        ('read',   'Read'),
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='notification_recipients'
+    )
+    notification = models.ForeignKey(
+        Notification,
+        on_delete=models.CASCADE,
+        related_name='recipient_statuses'
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        unique_together = ('user', 'notification')
+
+    def __str__(self):
+        return f"{self.user} → {self.notification.id} [{self.status}]"
 
 
 
