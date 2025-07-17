@@ -695,6 +695,8 @@ class Preference(models.Model):
         ('milestone', 'Milestone'),
         ('folder', 'Folder'),
         ('invoice', 'Invoice'),
+        ('lisense', 'License'),
+        ('staff_observation', 'Staff Observation'),
         ('time_card', 'Time Card'),
         ('expense_card', 'Expense Card'),
         ('purchase_order', 'Purchase Order'),
@@ -704,6 +706,13 @@ class Preference(models.Model):
         ('project_team', 'Project Team'),
         ('project_external_user', 'Project External User'),
         ('ecpmp_config', 'ECPMP Config'),
+        ('connection', 'Connection'),
+        ('Feedback', 'Feedback'),
+        ('company_profile', 'Company Profile'),
+        ('company_config', 'Company Config'),
+        ('stripe_invoice', 'Stripe Invoice'),
+        ('leave_request', 'Leave Request'),
+        ('calender_event', 'Calendar Event'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='preference')
     notify_item_created_by_me = models.BooleanField(default=False)
