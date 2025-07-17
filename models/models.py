@@ -755,7 +755,17 @@ class Role(models.Model):
         CompanyProfile, 
         on_delete=models.CASCADE, 
         related_name='roles',
-        help_text="Company this role belongs to"
+        help_text="Company this role belongs to",
+        null=True,
+        blank=True,
+    )
+    freelancer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='roles',
+        help_text="Freelancer this role belongs to",
+        null=True,
+        blank=True,
     )
     type = models.CharField(
         max_length=20,
