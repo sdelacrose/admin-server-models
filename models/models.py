@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from model_utils import FieldTracker
 
 from .constants import SHAREMUNDO_SOLUTION_TYPES
 
@@ -182,6 +183,7 @@ class CompanyProfile(models.Model):
     is_freetrial_availed = models.BooleanField(default=False)
     currency = models.CharField(max_length=100, blank=True, null=True, default="€")
 
+    tracker = FieldTracker()
 
     def __str__(self):
         return str(self.company_name)
