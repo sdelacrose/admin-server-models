@@ -857,13 +857,17 @@ class Notification(models.Model):
         ('update', 'Update'),
         ('delete', 'Delete'),
     )
+    BACKEND_TYPE = (
+        ('admin_backend', 'admin_backend'),
+        ('backend', 'backend'),
+    )
     user = models.ManyToManyField(User, related_name='notifications', blank=True)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     important = models.BooleanField(default=False)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
-
+    backend_type = models.CharField(max_length=15, choices=BACKEND_TYPE, null=True, blank=True, help_text="Type of backend that generated this notification")
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(db_index=True)
     target = GenericForeignKey('content_type', 'object_id')
