@@ -757,7 +757,17 @@ class Role(models.Model):
         CompanyProfile, 
         on_delete=models.CASCADE, 
         related_name='roles',
-        help_text="Company this role belongs to"
+        help_text="Company this role belongs to",
+        null=True,
+        blank=True,
+    )
+    freelancer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='roles',
+        help_text="Freelancer this role belongs to",
+        null=True,
+        blank=True,
     )
     type = models.CharField(
         max_length=20,
@@ -841,7 +851,7 @@ class UserRole(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('user', 'role')
+        unique_together = ('user', 'role', 'company')
         indexes = [
             models.Index(fields=['user']),
             models.Index(fields=['role']),
