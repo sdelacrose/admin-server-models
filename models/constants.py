@@ -48,7 +48,7 @@ PROJECT_MODULES = [
 ]
 
 GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
-GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE",
+GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE", "Calendar:CAL", "Revision:REV",
                      "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FUA"] + ["Drawing:DRW", "Report:RPT", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
@@ -77,7 +77,7 @@ GC_PROJECT_SERVICE_TYPES = []
 
 # Document Numbering System Constants
 GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Calendar:CAL", "Revision:REV", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
-GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
+GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Calendar:CAL", "Revision:REV", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
 
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#FF0000", "in progress:#FFFF00", "closed:#5CE75C"]
