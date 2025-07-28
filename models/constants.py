@@ -9,8 +9,7 @@ SHAREMUNDO_SOLUTION_TYPES = (
 ADMIN_SERVER_MODULES = [
     "connections",
     "users",
-    "solutions",
-    "licenses",
+    "solutions_licenses",
     "billing",
     "global_configurations",
     "company_profile",
@@ -111,3 +110,8 @@ class FeedbackStatusType(Enum):
     NO_ACTION_REQUESTED = "no_action_requested"
     CLOSED = "closed"
     ARCHIVED = "archived"
+
+
+ENTERPRISE_SOLUTION = "Enterprise Solution"
+ENERGY_CONSULTANT_SOLUTION = "Energy Consultant Solution"
+CORE_SOLUTION = "Core Solution"
