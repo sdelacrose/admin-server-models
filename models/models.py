@@ -810,7 +810,7 @@ class Role(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name} ({self.type} - {self.scope}) - {self.company.company_name}"
+        return f"{self.name} ({self.type} - {self.scope}) - {self.company.company_name if self.company else self.freelancer.full_name}"
 
 class RolePermission(models.Model):
     """
@@ -839,6 +839,7 @@ class UserRole(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_company_roles')
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='user_company_roles')
     company = models.ForeignKey(CompanyProfile, on_delete=models.CASCADE, related_name='user_company_roles', null=True, blank=True)
+    freelancer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_freelancer_roles', null=True, blank=True)
     assigned_by = models.ForeignKey(
         User, 
         on_delete=models.SET_NULL, 
@@ -851,7 +852,7 @@ class UserRole(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('user', 'role', 'company')
+        unique_together = ('user', 'role', 'company', 'freelancer')
         indexes = [
             models.Index(fields=['user']),
             models.Index(fields=['role']),
