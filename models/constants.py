@@ -75,8 +75,8 @@ GC_PURCHASE_ORDER_STATUS = ["Draft", "Under Approval", "Approved", "Issued", "Cl
 GC_PROJECT_SERVICE_TYPES = []
 
 # Document Numbering System Constants
-GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Calendar:CAL", "Revision:REV", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
-GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Calendar:CAL", "Revision:REV", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
+GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
+GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
 
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#FF0000", "in progress:#FFFF00", "closed:#5CE75C"]
