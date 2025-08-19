@@ -539,10 +539,18 @@ class Feedback(models.Model):
     company_profile = models.ForeignKey(
         CompanyProfile, 
         on_delete=models.CASCADE, 
-        related_name='feedbacks', 
+        related_name='company_feedbacks', 
         null=True, 
         blank=True,
-        help_text="User's Company (Ignore if freelancer)"
+        help_text="Company (Ignore if freelancer provided)"
+    )
+    freelancer = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='freelancer_feedbacks',
+        null=True, 
+        blank=True,
+        help_text="Freelancer (Ignore if company provided)"
     )
     solution_name = models.CharField(
         max_length=255,
@@ -551,7 +559,7 @@ class Feedback(models.Model):
     user = models.ForeignKey(   
         User, 
         on_delete=models.CASCADE, 
-        related_name='feedbacks',
+        related_name='user_feedbacks',
         help_text="User who created the feedback",
         null=True,
         blank=True,
@@ -634,6 +642,7 @@ class Feedback(models.Model):
             models.Index(fields=['status']),
             models.Index(fields=['feedback_type']),
             models.Index(fields=['company_profile']),
+            models.Index(fields=['freelancer']),
             models.Index(fields=['user']),
         ]
 
