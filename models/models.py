@@ -514,6 +514,11 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
+    salutation = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
 
     class Meta:
         unique_together = ('company_profile', 'user', 'solution')
