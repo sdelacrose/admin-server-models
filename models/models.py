@@ -132,7 +132,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class FreelancerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='freelancer_profile')
     bank_name = models.CharField(max_length=255)
-    iban = models.CharField(max_length=255, null=True, blank=True)
+    iban = models.CharField(max_length=255)
     bic = models.CharField(max_length=255)
     bank_address = models.TextField()
     currency = models.CharField(max_length=100, blank=True, null=True, default="€")
@@ -163,7 +163,7 @@ class CompanyProfile(models.Model):
     company_web_address = models.TextField()
     company_email_address = models.TextField()
     company_tax_reference = models.TextField()
-    company_iban = models.TextField(null=True, blank=True)
+    company_iban = models.TextField()
     company_bank_name = models.TextField(null=True,blank=True)
     company_bic = models.TextField(null=True, blank=True)
     company_bank_address = models.TextField(null=True, blank=True)
@@ -194,7 +194,7 @@ class BankDetail(models.Model):
         on_delete=models.CASCADE,
         related_name="bank_details"
     )
-    company_iban = models.TextField(null=True, blank=True)
+    company_iban = models.TextField()
     company_bank_name = models.TextField(null=True, blank=True)
     company_bic = models.TextField(null=True, blank=True)
     company_bank_address = models.TextField(null=True, blank=True)
@@ -510,6 +510,11 @@ class CompanyConfig(models.Model):
         default=list,
     )
     document_disciplines = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    salutation = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
