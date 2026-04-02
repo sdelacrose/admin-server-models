@@ -2,7 +2,7 @@ import django.contrib.postgres.fields
 from django.db import migrations, models
 
 
-DEFAULT_SALUTATIONS = ["Mr", "Mrs", "Sir", "Miss"]
+DEFAULT_SALUTATIONS = ["Mr", "Mrs", "X", "Miss"]
 
 
 def seed_salutations(apps, schema_editor):
