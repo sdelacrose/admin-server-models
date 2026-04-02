@@ -77,7 +77,7 @@ GC_PROJECT_SERVICE_TYPES = []
 # Document Numbering System Constants
 GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
 GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
-GC_SALUTATIONS = ["Mr", "Mrs", "Sir", "Miss"]
+GC_SALUTATIONS = ["Mr", "Mrs", "Miss", "X"]
 
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#FF0000", "in progress:#FFFF00", "closed:#5CE75C"]
