@@ -380,6 +380,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    labels = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
     purchase_order_status = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -495,6 +500,11 @@ class CompanyConfig(models.Model):
         default=list,
     )
     project_service_types = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    labels = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
