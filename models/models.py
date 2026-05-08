@@ -275,6 +275,60 @@ class StaffConfiguration(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class PublicHolidaySource(models.TextChoices):
+    MANUAL = "manual", "Manual"
+    IMPORTED = "imported", "Imported"
+
+
+class GlobalPublicHoliday(models.Model):
+    company_profile = models.ForeignKey(
+        CompanyProfile,
+        related_name="global_public_holidays",
+        on_delete=models.CASCADE,
+    )
+    date = models.DateField()
+    name = models.CharField(max_length=255)
+    source = models.CharField(
+        max_length=20,
+        choices=PublicHolidaySource.choices,
+        default=PublicHolidaySource.MANUAL,
+    )
+    country_code = models.CharField(max_length=10, null=True, blank=True)
+    external_id = models.CharField(max_length=255, null=True, blank=True)
+    created_by = models.ForeignKey(
+        User,
+        related_name="created_global_public_holidays",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    tracker = FieldTracker()
+
+    class Meta:
+        ordering = ["date", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["company_profile", "date"],
+                name="unique_global_public_holiday_per_company_date",
+            ),
+        ]
+        indexes = [
+            models.Index(
+                fields=["company_profile", "date"],
+                name="glob_pub_hol_comp_dt_idx",
+            ),
+            models.Index(
+                fields=["source"],
+                name="glob_pub_hol_src_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.name} ({self.date})"
+
+
 class UserOutlookCredentials(models.Model):
     user = models.OneToOneField(User, related_name="outlook_credentials", on_delete=models.CASCADE)
     outlook_access_token = models.TextField(null=True, blank=True)
