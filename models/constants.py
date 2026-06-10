@@ -39,6 +39,8 @@ PROJECT_MODULES = [
     "action_item",
     "documents",
     "object_assessments",
+    "solution_demands",
+    "requirements",
     "site_reporting",
     "funding",
     "phases_management",
