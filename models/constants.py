@@ -32,6 +32,7 @@ SOLUTION_MODULES = [
     "opportunity_offers",
     "calendar_events",
     "company_configurations",
+    "available_product_parts",
 ]
 
 PROJECT_MODULES = [
@@ -41,6 +42,7 @@ PROJECT_MODULES = [
     "object_assessments",
     "solution_demands",
     "requirements",
+    "bill_of_material",
     "site_reporting",
     "funding",
     "phases_management",
