@@ -39,6 +39,7 @@ PROJECT_MODULES = [
     "project",
     "action_item",
     "documents",
+    "calendar_events",
     "object_assessments",
     "solution_demands",
     "requirements",
