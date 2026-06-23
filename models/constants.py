@@ -66,6 +66,7 @@ GC_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
 GC_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 GC_TEAM_MEMBERS_ROLES = ["architect", "structural engineer", "contractor", "project manager"]
 GC_AREA_OF_EXPERTISE = ["HVAC services company", "carpenter", "energy consultancy"]
+GC_COMPANY_ROLES = ["Company Role #1", "Company Role #2", "Company Role #3"]
 GC_FUNDING_STRATEGY = [
                 "GEG Energy efficient Building 40", "GEG Energy efficient Building 40 EE",
                 "GEG Energy efficient Building 55", "GEG Energy efficient Building 55 EE",

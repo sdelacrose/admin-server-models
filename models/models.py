@@ -363,6 +363,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    company_roles = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
     funding_strategy = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -484,6 +489,11 @@ class CompanyConfig(models.Model):
         default=list,
     )
     area_of_expertise = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    company_roles = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
