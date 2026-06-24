@@ -85,6 +85,11 @@ class User(AbstractBaseUser, PermissionsMixin):
             ("German", _("German")),
         ],
     )
+    spoken_languages = ArrayField(
+        base_field=models.CharField(max_length=100),
+        default=list,
+        blank=True,
+    )
     USER_TYPE_CHOICES = [
         ("freelancer", "Freelancer"),
         ("company_user", "Company User"),
