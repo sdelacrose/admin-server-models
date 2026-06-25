@@ -71,6 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     availability_type = models.CharField(max_length=50, null=True, blank=True)
     availability_location = models.TextField(null=True, blank=True)
     availability_hours_per_week = models.IntegerField(null=True, blank=True)
+    open_to_new_challenges = models.BooleanField(default=False)
     resume = models.TextField(null=True, blank=True)
     user_image = models.TextField(null=True, blank=True)
     user_searchable = models.BooleanField(default=False)
