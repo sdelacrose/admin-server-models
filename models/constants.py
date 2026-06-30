@@ -86,6 +86,7 @@ GC_PROJECT_SERVICE_TYPES = []
 GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
 GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
 GC_SALUTATIONS = ["Mr", "Mrs", "Miss", "X"]
+GC_ROOMS = ["ROOM 1", "ROOM 2", "ROOM 3"]
 
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
