@@ -465,6 +465,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    rooms = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
 
 class CompanyConfig(models.Model):
     solution = models.CharField(max_length=255, choices=SHAREMUNDO_SOLUTION_TYPES, default="Energy Consultant Solution")
@@ -595,6 +600,11 @@ class CompanyConfig(models.Model):
         default=list,
     )
     salutation = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    rooms = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
