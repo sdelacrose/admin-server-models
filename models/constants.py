@@ -33,6 +33,7 @@ SOLUTION_MODULES = [
     "calendar_events",
     "company_configurations",
     "available_product_parts",
+    "machines",
 ]
 
 PROJECT_MODULES = [
