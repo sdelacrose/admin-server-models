@@ -34,6 +34,7 @@ SOLUTION_MODULES = [
     "company_configurations",
     "available_product_parts",
     "machines",
+    "equipments",
 ]
 
 PROJECT_MODULES = [
