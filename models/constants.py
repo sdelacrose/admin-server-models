@@ -45,6 +45,7 @@ PROJECT_MODULES = [
     "object_assessments",
     "solution_demands",
     "requirements",
+    "transports",
     "bill_of_material",
     "site_reporting",
     "funding",
