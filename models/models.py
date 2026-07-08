@@ -471,6 +471,63 @@ class GlobalConfig(models.Model):
         default=list,
     )
 
+
+class SupplierPaymentMethod(models.Model):
+    METHOD_CARD = "card"
+    METHOD_BANK_TRANSFER = "bank_transfer"
+    METHOD_INVOICE = "invoice"
+    METHOD_OTHER = "other"
+
+    METHOD_TYPE_CHOICES = (
+        (METHOD_CARD, "Card"),
+        (METHOD_BANK_TRANSFER, "Bank transfer"),
+        (METHOD_INVOICE, "Invoice"),
+        (METHOD_OTHER, "Other"),
+    )
+
+    company_profile = models.ForeignKey(
+        CompanyProfile,
+        on_delete=models.CASCADE,
+        related_name="supplier_payment_methods",
+        null=True,
+        blank=True,
+    )
+    name = models.CharField(max_length=255)
+    method_type = models.CharField(
+        max_length=50,
+        choices=METHOD_TYPE_CHOICES,
+        default=METHOD_OTHER,
+    )
+    display_details = models.CharField(max_length=500, blank=True, null=True)
+    reference = models.CharField(max_length=255, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="created_supplier_payment_methods",
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name", "id"]
+        indexes = [
+            models.Index(
+                fields=["company_profile", "is_active"],
+                name="models_supp_company_149af2_idx",
+            ),
+            models.Index(
+                fields=["method_type"],
+                name="models_supp_method__f91166_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return self.name
+
+
 class CompanyConfig(models.Model):
     solution = models.CharField(max_length=255, choices=SHAREMUNDO_SOLUTION_TYPES, default="Energy Consultant Solution")
 
