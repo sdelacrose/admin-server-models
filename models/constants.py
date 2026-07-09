@@ -33,6 +33,7 @@ SOLUTION_MODULES = [
     "calendar_events",
     "company_configurations",
     "available_product_parts",
+    "company_solution_space",
     "machines",
     "equipments",
 ]
@@ -47,6 +48,7 @@ PROJECT_MODULES = [
     "requirements",
     "transports",
     "bill_of_material",
+    "project_solution_space",
     "site_reporting",
     "funding",
     "phases_management",
