@@ -528,6 +528,67 @@ class SupplierPaymentMethod(models.Model):
         return self.name
 
 
+class PurchasingCredential(models.Model):
+    SUPPLIER_FESTO = "festo"
+    SUPPLIER_WAGO = "wago"
+    SUPPLIER_IFM = "ifm"
+    SUPPLIER_HILSCHER = "hilscher"
+    SUPPLIER_PHOENIX_CONTACT = "phoenix_contact"
+    SUPPLIER_SCHNEIDER_ELECTRIC = "schneider_electric"
+    SUPPLIER_OTHER = "other"
+
+    SUPPLIER_CHOICES = (
+        (SUPPLIER_FESTO, "FESTO"),
+        (SUPPLIER_WAGO, "WAGO"),
+        (SUPPLIER_IFM, "ifm"),
+        (SUPPLIER_HILSCHER, "Hilscher"),
+        (SUPPLIER_PHOENIX_CONTACT, "Phoenix Contact"),
+        (SUPPLIER_SCHNEIDER_ELECTRIC, "Schneider Electric"),
+        (SUPPLIER_OTHER, "Other"),
+    )
+
+    company_profile = models.ForeignKey(
+        CompanyProfile,
+        on_delete=models.CASCADE,
+        related_name="purchasing_credentials",
+        null=True,
+        blank=True,
+    )
+    supplier = models.CharField(
+        max_length=100,
+        choices=SUPPLIER_CHOICES,
+        default=SUPPLIER_FESTO,
+    )
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=500)
+    is_active = models.BooleanField(default=True)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="created_purchasing_credentials",
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["supplier", "username", "id"]
+        indexes = [
+            models.Index(
+                fields=["company_profile", "supplier"],
+                name="purch_cred_company_idx",
+            ),
+            models.Index(
+                fields=["company_profile", "is_active"],
+                name="purch_cred_active_idx",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.get_supplier_display()} - {self.username}"
+
+
 class CompanyConfig(models.Model):
     solution = models.CharField(max_length=255, choices=SHAREMUNDO_SOLUTION_TYPES, default="Energy Consultant Solution")
 
