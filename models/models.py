@@ -500,6 +500,9 @@ class SupplierPaymentMethod(models.Model):
     )
     display_details = models.CharField(max_length=500, blank=True, null=True)
     reference = models.CharField(max_length=255, blank=True, null=True)
+    card_holder = models.CharField(max_length=255, blank=True, null=True)
+    card_last_four = models.CharField(max_length=4, blank=True, null=True)
+    vcn_last_four = models.CharField(max_length=4, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     created_by = models.ForeignKey(
         User,
