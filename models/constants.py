@@ -24,6 +24,7 @@ SOLUTION_MODULES = [
     "time_booking",
     "expense_booking",
     "invoice",
+    "purchase_order",
     "resources",
     "leave_request",
     "staff_observation",
