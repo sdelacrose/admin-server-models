@@ -94,6 +94,20 @@ GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Manual:
 GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
 GC_SALUTATIONS = ["Mr", "Mrs", "Miss", "X"]
 GC_ROOMS = ["ROOM 1", "ROOM 2", "ROOM 3"]
+GC_SKILLS = [
+    "blow",
+    "push",
+    "move",
+    "turn",
+    "lift",
+    "lay down",
+    "heat up",
+    "transport",
+    "deburr",
+    "drill",
+    "tighten",
+    "Soldering",
+]
 
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]

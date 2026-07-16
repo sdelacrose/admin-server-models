@@ -8,7 +8,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from model_utils import FieldTracker
 
-from .constants import SHAREMUNDO_SOLUTION_TYPES
+from .constants import GC_SKILLS, SHAREMUNDO_SOLUTION_TYPES
+
+
+def default_skills():
+    return list(GC_SKILLS)
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -470,6 +474,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    skills = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=default_skills,
+    )
 
 
 class SupplierPaymentMethod(models.Model):
@@ -729,6 +738,11 @@ class CompanyConfig(models.Model):
         models.CharField(max_length=255),
         blank=True,
         default=list,
+    )
+    skills = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=default_skills,
     )
 
     class Meta:
