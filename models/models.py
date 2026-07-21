@@ -1,4 +1,5 @@
 from django.contrib.auth.models import BaseUserManager, PermissionsMixin
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.contrib.postgres.fields import ArrayField
@@ -9,6 +10,15 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from model_utils import FieldTracker
 
 from .constants import GC_SKILLS, SHAREMUNDO_SOLUTION_TYPES
+from .display_feature_registry import (
+    DISPLAY_FEATURE_REGISTRY_VERSION,
+    SolutionId,
+    normalize_solution_id,
+)
+from .display_feature_resolver import (
+    DisplayFeatureOverrideError,
+    normalize_display_overrides,
+)
 
 
 def default_skills():
@@ -197,6 +207,70 @@ class CompanyProfile(models.Model):
 
     def __str__(self):
         return str(self.company_name)
+
+
+class SolutionDisplayConfiguration(models.Model):
+    SOLUTION_CHOICES = (
+        (SolutionId.ENERGY_CONSULTANT.value, "Energy Consultant Solution"),
+        (SolutionId.ENTERPRISE.value, "Enterprise Solution"),
+        (SolutionId.CORE.value, "Core Solution"),
+    )
+
+    company = models.ForeignKey(
+        CompanyProfile,
+        on_delete=models.CASCADE,
+        related_name="solution_display_configurations",
+    )
+    solution = models.CharField(max_length=64, choices=SOLUTION_CHOICES)
+    registry_version = models.PositiveIntegerField(
+        default=DISPLAY_FEATURE_REGISTRY_VERSION
+    )
+    overrides = models.JSONField(default=dict, blank=True)
+    updated_by = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="updated_solution_display_configurations",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["company_id", "solution"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["company", "solution"],
+                name="unique_company_solution_display_config",
+            ),
+        ]
+
+    def clean(self):
+        super().clean()
+        errors = {}
+
+        try:
+            self.solution = normalize_solution_id(self.solution).value
+        except ValueError as exc:
+            errors["solution"] = str(exc)
+
+        if self.registry_version < 1:
+            errors["registry_version"] = "Registry version must be positive."
+
+        if "solution" not in errors:
+            try:
+                self.overrides = normalize_display_overrides(
+                    self.solution,
+                    self.overrides,
+                )
+            except DisplayFeatureOverrideError as exc:
+                errors["overrides"] = str(exc)
+
+        if errors:
+            raise ValidationError(errors)
+
+    def __str__(self):
+        return f"{self.company} - {self.get_solution_display()}"
 
 class BankDetail(models.Model):
     company = models.ForeignKey(
