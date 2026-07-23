@@ -10,7 +10,7 @@ from .constants import ADMIN_SERVER_MODULES, PROJECT_MODULES, SOLUTION_MODULES
 
 
 DISPLAY_FEATURE_SCHEMA_MAJOR = 1
-DISPLAY_FEATURE_REGISTRY_REVISION = 4
+DISPLAY_FEATURE_REGISTRY_REVISION = 5
 # Backward-compatible storage/API alias. New clients use schema/revision fields.
 DISPLAY_FEATURE_REGISTRY_VERSION = DISPLAY_FEATURE_REGISTRY_REVISION
 
@@ -222,7 +222,7 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         FeatureType.MODULE,
         permission_rule=permission(company, "action_item"),
     )
-    for tab in ("list", "board", "time", "calendar"):
+    for tab in ("list", "board", "time", "calendar", "gantt"):
         add(
             f"company.action_items.tabs.{tab}",
             FeatureType.TAB,
@@ -548,7 +548,7 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         solutions=PROJECT_SOLUTIONS,
         permission_rule=permission(project, "action_item"),
     )
-    for tab in ("list", "board", "time", "calendar"):
+    for tab in ("list", "board", "time", "calendar", "gantt"):
         add(
             f"project.action_items.tabs.{tab}",
             FeatureType.TAB,
