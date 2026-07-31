@@ -1014,8 +1014,6 @@ class Preference(models.Model):
         ('project_phase', 'Project Phase'),
         ('object_assessment', 'Object Assessment'),
         ('project_team', 'Project Team'),
-        ('project_external_user', 'Project External User'),
-        ('ecpmp_config', 'ECPMP Config'),
     )
     # Backward-compatible alias for older imports/migrations.
     TYPE_CHOICES = PROJECT_TYPE_CHOICES
