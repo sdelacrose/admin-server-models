@@ -10,7 +10,7 @@ from .constants import ADMIN_SERVER_MODULES, PROJECT_MODULES, SOLUTION_MODULES
 
 
 DISPLAY_FEATURE_SCHEMA_MAJOR = 1
-DISPLAY_FEATURE_REGISTRY_REVISION = 5
+DISPLAY_FEATURE_REGISTRY_REVISION = 6
 # Backward-compatible storage/API alias. New clients use schema/revision fields.
 DISPLAY_FEATURE_REGISTRY_VERSION = DISPLAY_FEATURE_REGISTRY_REVISION
 
@@ -228,7 +228,13 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
             FeatureType.TAB,
             parent="company.action_items",
         )
-    for linked_object in ("comments", "documents", "structure", "opportunities"):
+    for linked_object in (
+        "comments",
+        "documents",
+        "structure",
+        "predecessors",
+        "opportunities",
+    ):
         add(
             f"company.action_items.linked.{linked_object}",
             FeatureType.LINKED_OBJECT,
@@ -555,7 +561,7 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
             parent="project.action_items",
             solutions=PROJECT_SOLUTIONS,
         )
-    for linked_object in ("comments", "documents", "structure"):
+    for linked_object in ("comments", "documents", "structure", "predecessors"):
         add(
             f"project.action_items.linked.{linked_object}",
             FeatureType.LINKED_OBJECT,
