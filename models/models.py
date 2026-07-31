@@ -1006,7 +1006,6 @@ class Preference(models.Model):
         ('milestone', 'Milestone'),
         ('folder', 'Folder'),
         ('invoice', 'Invoice'),
-        ('time_card', 'Time Card'),
         # ExpenseCard signals use notification_type='time_expense'
         ('time_expense', 'Expense Card'),
         ('purchase_order', 'Purchase Order'),
@@ -1019,7 +1018,6 @@ class Preference(models.Model):
     TYPE_CHOICES = PROJECT_TYPE_CHOICES
     COMPANY_TYPE_CHOICES = (
         ('action_item', 'Action Item'),
-        ('time_card', 'Time Card'),
         ('time_expense', 'Expense Card'),
         ('invoice', 'Invoice'),
         ('folder', 'Folder'),
