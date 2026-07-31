@@ -40,8 +40,8 @@ class DisplayFeatureRegistryTests(TestCase):
         validate_feature_registry(DISPLAY_FEATURES)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 5)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 5)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 6)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 6)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -51,9 +51,9 @@ class DisplayFeatureRegistryTests(TestCase):
             if key == "company" or key.startswith("company.")
         }
 
-        self.assertEqual(len(self.energy_keys), 189)
-        self.assertEqual(len(self.enterprise_keys), 188)
-        self.assertEqual(len(self.core_keys), 100)
+        self.assertEqual(len(self.energy_keys), 191)
+        self.assertEqual(len(self.enterprise_keys), 190)
+        self.assertEqual(len(self.core_keys), 101)
         self.assertEqual(self.energy_keys, all_keys)
         self.assertEqual(
             self.energy_keys - self.enterprise_keys,
@@ -117,6 +117,14 @@ class DisplayFeatureRegistryTests(TestCase):
         self.assertTrue(expected_project_tabs.issubset(self.energy_keys))
         self.assertIn("company.action_items.tabs.gantt", self.energy_keys)
         self.assertIn("project.action_items.tabs.gantt", self.energy_keys)
+        self.assertIn(
+            "company.action_items.linked.predecessors",
+            self.energy_keys,
+        )
+        self.assertIn(
+            "project.action_items.linked.predecessors",
+            self.energy_keys,
+        )
 
     def test_confirmed_linked_features_are_registered(self):
         expected_keys = {
