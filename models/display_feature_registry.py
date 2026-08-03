@@ -299,7 +299,7 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         company_assembly_catalog,
         FeatureType.SUBMODULE,
         parent="company.product_services",
-        permission_rule=permission(company, "company_solution_space"),
+        permission_rule=permission(company, "company_assembly_catalog"),
     )
     for tab in (
         "list",
@@ -706,7 +706,7 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         FeatureType.SUBMODULE,
         parent=project_products,
         solutions=PROJECT_SOLUTIONS,
-        permission_rule=permission(project, "project_solution_space"),
+        permission_rule=permission(project, "project_assembly_catalog"),
     )
     for tab in (
         "search",
