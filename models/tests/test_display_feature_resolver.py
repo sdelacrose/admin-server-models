@@ -18,6 +18,28 @@ class DisplayFeatureResolverTests(TestCase):
         self.assertTrue(all(item.configured_visible for item in resolved))
         self.assertTrue(all(item.effective_visible for item in resolved))
 
+    def test_dependent_action_features_default_on_and_support_sparse_overrides(self):
+        default_resolved = {
+            item.key: item
+            for item in resolve_display_features(
+                SolutionId.ENERGY_CONSULTANT,
+            )
+        }
+        company_key = "company.action_items.linked.dependents"
+        project_key = "project.action_items.linked.dependents"
+
+        self.assertTrue(default_resolved[company_key].effective_visible)
+        self.assertTrue(default_resolved[project_key].effective_visible)
+
+        overrides = normalize_display_overrides(
+            SolutionId.ENERGY_CONSULTANT,
+            {
+                company_key: False,
+                project_key: True,
+            },
+        )
+        self.assertEqual(overrides, {company_key: False})
+
     def test_parent_hides_descendants_without_changing_child_configuration(self):
         resolved = {
             item.key: item

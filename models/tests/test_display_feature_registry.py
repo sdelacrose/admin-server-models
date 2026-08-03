@@ -40,8 +40,8 @@ class DisplayFeatureRegistryTests(TestCase):
         validate_feature_registry(DISPLAY_FEATURES)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 6)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 6)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 7)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 7)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -51,9 +51,9 @@ class DisplayFeatureRegistryTests(TestCase):
             if key == "company" or key.startswith("company.")
         }
 
-        self.assertEqual(len(self.energy_keys), 191)
-        self.assertEqual(len(self.enterprise_keys), 190)
-        self.assertEqual(len(self.core_keys), 101)
+        self.assertEqual(len(self.energy_keys), 193)
+        self.assertEqual(len(self.enterprise_keys), 192)
+        self.assertEqual(len(self.core_keys), 102)
         self.assertEqual(self.energy_keys, all_keys)
         self.assertEqual(
             self.energy_keys - self.enterprise_keys,
@@ -125,6 +125,23 @@ class DisplayFeatureRegistryTests(TestCase):
             "project.action_items.linked.predecessors",
             self.energy_keys,
         )
+        self.assertIn(
+            "company.action_items.linked.dependents",
+            self.energy_keys,
+        )
+        self.assertIn(
+            "project.action_items.linked.dependents",
+            self.energy_keys,
+        )
+
+    def test_action_item_dependency_features_are_visible_by_default(self):
+        for key in (
+            "company.action_items.linked.predecessors",
+            "company.action_items.linked.dependents",
+            "project.action_items.linked.predecessors",
+            "project.action_items.linked.dependents",
+        ):
+            self.assertTrue(DISPLAY_FEATURE_BY_KEY[key].default_visible)
 
     def test_confirmed_linked_features_are_registered(self):
         expected_keys = {
