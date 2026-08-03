@@ -88,7 +88,7 @@ class DisplayFeatureResolverTests(TestCase):
             "company.action_items.linked.structure",
             "company.product_services.machines.linked.documents",
             "company.product_services.equipments.linked.structure",
-            "company.product_services.solution_space.tabs.list.linked.documents",
+            "company.product_services.assembly_catalog.tabs.list.linked.documents",
         ):
             self.assertFalse(resolved[key].effective_visible)
             self.assertEqual(resolved[key].reason, VisibilityReason.DEPENDENCY_HIDDEN)
