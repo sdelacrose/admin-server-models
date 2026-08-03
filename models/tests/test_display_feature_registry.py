@@ -40,8 +40,8 @@ class DisplayFeatureRegistryTests(TestCase):
         validate_feature_registry(DISPLAY_FEATURES)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 6)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 6)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 7)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 7)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -136,14 +136,14 @@ class DisplayFeatureRegistryTests(TestCase):
             "company.product_services.equipments.linked.documents",
             "company.product_services.equipments.linked.structure",
             "company.projects.linked.machines",
-            "company.product_services.solution_space.tabs.list.linked.comments",
-            "company.product_services.solution_space.tabs.list.linked.documents",
-            "company.product_services.solution_space.tabs.list.linked.structure",
-            "project.product_services.solution_space.tabs.list.linked.comments",
-            "project.product_services.solution_space.tabs.list.linked.observations",
-            "project.product_services.solution_space.tabs.list.linked.documents",
-            "project.product_services.solution_space.tabs.list.linked.structure",
-            "project.product_services.solution_space.tabs.list.linked.requirements",
+            "company.product_services.assembly_catalog.tabs.list.linked.comments",
+            "company.product_services.assembly_catalog.tabs.list.linked.documents",
+            "company.product_services.assembly_catalog.tabs.list.linked.structure",
+            "project.product_services.assembly_catalog.tabs.list.linked.comments",
+            "project.product_services.assembly_catalog.tabs.list.linked.observations",
+            "project.product_services.assembly_catalog.tabs.list.linked.documents",
+            "project.product_services.assembly_catalog.tabs.list.linked.structure",
+            "project.product_services.assembly_catalog.tabs.list.linked.requirements",
             "project.execution.transport.linked.comments",
             "project.execution.transport.linked.observations",
             "project.execution.transport.linked.documents",
