@@ -21,7 +21,7 @@ def rename_solution_space_keys(apps, schema_editor):
     configuration = apps.get_model("models", "SolutionDisplayConfiguration")
     for row in configuration.objects.all().iterator():
         row.overrides = _rewrite_override_keys(row.overrides, OLD_SEGMENT, NEW_SEGMENT)
-        row.registry_version = 7
+        row.registry_version = 8
         row.save(update_fields=["overrides", "registry_version"])
 
 
@@ -29,21 +29,21 @@ def restore_solution_space_keys(apps, schema_editor):
     configuration = apps.get_model("models", "SolutionDisplayConfiguration")
     for row in configuration.objects.all().iterator():
         row.overrides = _rewrite_override_keys(row.overrides, NEW_SEGMENT, OLD_SEGMENT)
-        row.registry_version = 6
+        row.registry_version = 7
         row.save(update_fields=["overrides", "registry_version"])
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("models", "0088_display_configuration_registry_version_6"),
+        ("models", "0090_merge_display_configuration_and_preferences"),
     ]
 
     operations = [
         migrations.AlterField(
             model_name="solutiondisplayconfiguration",
             name="registry_version",
-            field=models.PositiveIntegerField(default=7),
+            field=models.PositiveIntegerField(default=8),
         ),
         migrations.RunPython(
             rename_solution_space_keys,

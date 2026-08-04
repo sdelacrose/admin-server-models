@@ -158,7 +158,7 @@ def restore_permission_modules(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("models", "0089_rename_solution_space_to_assembly_catalog"),
+        ("models", "0091_rename_solution_space_to_assembly_catalog"),
     ]
 
     operations = [
