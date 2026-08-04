@@ -40,7 +40,7 @@ class DisplayFeatureRegistryTests(TestCase):
         validate_feature_registry(DISPLAY_FEATURES)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 7)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 8)
         self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 8)
 
     def test_solution_catalogs_match_solution_profiles(self):
