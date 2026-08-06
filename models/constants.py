@@ -72,11 +72,121 @@ GC_PROJECT_TYPES = [
     "Compliance & Regulatory Project",
 ]
 LEGACY_GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
-GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE",
-                     "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FAU"] + [
-                         "Drawing:DRW", "Report:RPT", "Manual:MAN", "Procedure:PRO",
-                         "Customer Demand:CDE", "Other:OTH"
-                     ]
+LEGACY_GC_DOCUMENT_TYPES = [
+    "Supplier Invoice:SIN",
+    "Customer Invoice:CIN",
+    "Contract:CON",
+    "Specification:SPE",
+    "Funding Request:FUR",
+    "Confirmation of Receipt:COR",
+    "Funding Authorisation:FAU",
+    "Drawing:DRW",
+    "Report:RPT",
+    "Manual:MAN",
+    "Procedure:PRO",
+    "Customer Demand:CDE",
+    "Other:OTH",
+    "Calendar:CAL",
+    "Revision:REV",
+]
+GC_COMPANY_DOCUMENT_TYPES = [
+    "Bonds",
+    "Calculation",
+    "Cash Flow Statement",
+    "Change/Variation",
+    "Claims/extension",
+    "Collateral Warranty",
+    "Contractor Initiated Changes",
+    "Contractual Correspondence and Notices",
+    "Coordination Meetings",
+    "CTS",
+    "Data Sheet",
+    "Drawing",
+    "Employer's Instructions",
+    "Final Payment",
+    "General",
+    "Hand-over",
+    "HES - PD",
+    "Insurance",
+    "Interim Payment App. / Payment Notice",
+    "Letter",
+    "Loss and Expense Claim",
+    "MOM",
+    "MSDS",
+    "Programme",
+    "Progress Reports",
+    "Punch list",
+    "Quality Control Surv.",
+    "Rectification Period",
+    "RFI",
+    "Schedule",
+    "Single Line Diagram",
+    "Specification",
+    "Statutory Approval or Permissions",
+    "Steering Committee Meeting",
+]
+GC_PROJECT_DOCUMENT_TYPES = [
+    "Architectural view",
+    "Area classification drawing",
+    "Cable schedule, pipe support and spring schedule",
+    "Calculations, curves, tables",
+    "Call for meeting, MoM, meeting presentation, etc.",
+    "Cause and effect chart",
+    "Contract",
+    "Contracting strategy",
+    "Correspondence",
+    "Correspondence of contract",
+    "D model",
+    "Data sheet, according to discipline",
+    "Detail drawing",
+    "Diagram; engineering, functional, block, interconnection, nodal, circuit",
+    "Drawing",
+    "Equipment layout",
+    "Estimate, budget",
+    "Fire protection drawing",
+    "Frame agreement",
+    "General and detailed specifications",
+    "General arrangement drawing (guide drawing)",
+    "Heat and mass balance",
+    "Heat tracing drawing",
+    "Internal Due Diligence (IDD)",
+    "Isometric drawing",
+    "ITB related (bid clarification)",
+    "Laboratory results & reports",
+    "Layout of any kind (plot plan, site plan etc.)",
+    "Lists of any kind, index, legend",
+    "Loading diagram, loading plan, structural loads",
+    "Logic and sequence diagram",
+    "Logistic",
+    "Loop diagram",
+    "Maintenance information (e.g. Maintenance manual)",
+    "Material receiving report",
+    "Material take-off (MTO)",
+    "Mechanical Completion and Commissioning documents",
+    "Miscellaneous (not covered by any specific document type above)",
+    "Offer/quotation",
+    "Operational information (e.g. Operating manual)",
+    "Org. chart, functional descriptions etc.",
+    "Permitting and Licensing",
+    "Piping and instrumentation diagram (PID)",
+    "Process flow diagram, utility flow diagram",
+    "Project control (MPR, Cost report, close-out report, etc.)",
+    "Project design criteria; design basis, principal decisions, PCP",
+    "Project procedure, work instruction, manual",
+    "Purchase order",
+    "Report of any kind, according to discipline",
+    "Requisition",
+    "Sales agreement (EAR or Project Agreement)",
+    "Schematics",
+    "System topology, system control diagram",
+    "Technical descriptions",
+    "Termination drawing, termination details",
+    "Time schedule, planning, work plan",
+    "Typical drawing, sketch",
+    "Verification document",
+]
+# Backward-compatible alias used by older callers; prefer GC_COMPANY_DOCUMENT_TYPES.
+GC_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
@@ -84,7 +194,6 @@ GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
 GC_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
 GC_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 GC_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-GC_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 GC_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
 GC_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 GC_TEAM_MEMBERS_ROLES = ["architect", "structural engineer", "contractor", "project manager"]
@@ -129,9 +238,8 @@ CORE_AREA_OF_EXPERTISE = ["Software Development", "Project Management", "Busines
 CORE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 CORE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 CORE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-CORE_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 CORE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
-CORE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
+CORE_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
 CORE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
 
@@ -142,10 +250,9 @@ ENTERPRISE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 ENTERPRISE_TEAM_MEMBERS_ROLES = ["architect", "developer", "project manager", "business analyst"]
 ENTERPRISE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 ENTERPRISE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-ENTERPRISE_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 ENTERPRISE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
 ENTERPRISE_PROJECT_TYPES = GC_PROJECT_TYPES
-ENTERPRISE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
+ENTERPRISE_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
 ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
 class FeedbackStatusType(Enum):

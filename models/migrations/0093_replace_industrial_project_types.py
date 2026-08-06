@@ -63,7 +63,7 @@ def replace_project_types(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("models", "0090_merge_display_configuration_and_preferences"),
+        ("models", "0092_rename_solution_space_permission_modules"),
     ]
 
     operations = [
