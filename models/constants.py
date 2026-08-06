@@ -57,7 +57,21 @@ PROJECT_MODULES = [
     "ecpmp_configurations",
 ]
 
-GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
+GC_PROJECT_TYPES = [
+    "Engineering, Design & Studies",
+    "EPC / Turnkey Project",
+    "Construction & Installation",
+    "Commissioning & Start-up",
+    "Operations & Maintenance",
+    "Industrial Improvement",
+    "Digital, Data & IT Project",
+    "Transformation & Change",
+    "Energy & Transition Project",
+    "Infrastructure Project",
+    "Program / Multi-Project",
+    "Compliance & Regulatory Project",
+]
+LEGACY_GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
 GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE",
                      "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FAU"] + [
                          "Drawing:DRW", "Report:RPT", "Manual:MAN", "Procedure:PRO",
@@ -130,7 +144,7 @@ ENTERPRISE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 ENTERPRISE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
 ENTERPRISE_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 ENTERPRISE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
-ENTERPRISE_PROJECT_TYPES = ["Implementation", "Migration", "Integration", "Other"]
+ENTERPRISE_PROJECT_TYPES = GC_PROJECT_TYPES
 ENTERPRISE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
 ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
