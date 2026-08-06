@@ -10,7 +10,7 @@ from .constants import ADMIN_SERVER_MODULES, PROJECT_MODULES, SOLUTION_MODULES
 
 
 DISPLAY_FEATURE_SCHEMA_MAJOR = 1
-DISPLAY_FEATURE_REGISTRY_REVISION = 7
+DISPLAY_FEATURE_REGISTRY_REVISION = 8
 # Backward-compatible storage/API alias. New clients use schema/revision fields.
 DISPLAY_FEATURE_REGISTRY_VERSION = DISPLAY_FEATURE_REGISTRY_REVISION
 
@@ -295,12 +295,12 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
             parent="company.product_services.available_products",
         )
 
-    company_solution_space = "company.product_services.solution_space"
+    company_assembly_catalog = "company.product_services.assembly_catalog"
     add(
-        company_solution_space,
+        company_assembly_catalog,
         FeatureType.SUBMODULE,
         parent="company.product_services",
-        permission_rule=permission(company, "company_solution_space"),
+        permission_rule=permission(company, "company_assembly_catalog"),
     )
     for tab in (
         "list",
@@ -311,15 +311,15 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         "aas_models",
     ):
         add(
-            f"{company_solution_space}.tabs.{tab}",
+            f"{company_assembly_catalog}.tabs.{tab}",
             FeatureType.TAB,
-            parent=company_solution_space,
+            parent=company_assembly_catalog,
         )
     for linked_object in ("comments", "documents", "structure"):
         add(
-            f"{company_solution_space}.tabs.list.linked.{linked_object}",
+            f"{company_assembly_catalog}.tabs.list.linked.{linked_object}",
             FeatureType.LINKED_OBJECT,
-            parent=f"{company_solution_space}.tabs.list",
+            parent=f"{company_assembly_catalog}.tabs.list",
         )
 
     services = "company.product_services.services"
@@ -707,13 +707,13 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
             solutions=PROJECT_SOLUTIONS,
         )
 
-    project_solution_space = f"{project_products}.solution_space"
+    project_assembly_catalog = f"{project_products}.assembly_catalog"
     add(
-        project_solution_space,
+        project_assembly_catalog,
         FeatureType.SUBMODULE,
         parent=project_products,
         solutions=PROJECT_SOLUTIONS,
-        permission_rule=permission(project, "project_solution_space"),
+        permission_rule=permission(project, "project_assembly_catalog"),
     )
     for tab in (
         "search",
@@ -725,9 +725,9 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         "aas_models",
     ):
         add(
-            f"{project_solution_space}.tabs.{tab}",
+            f"{project_assembly_catalog}.tabs.{tab}",
             FeatureType.TAB,
-            parent=project_solution_space,
+            parent=project_assembly_catalog,
             solutions=PROJECT_SOLUTIONS,
         )
     for linked_object in (
@@ -738,9 +738,9 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         "requirements",
     ):
         add(
-            f"{project_solution_space}.tabs.list.linked.{linked_object}",
+            f"{project_assembly_catalog}.tabs.list.linked.{linked_object}",
             FeatureType.LINKED_OBJECT,
-            parent=f"{project_solution_space}.tabs.list",
+            parent=f"{project_assembly_catalog}.tabs.list",
             solutions=PROJECT_SOLUTIONS,
         )
 
