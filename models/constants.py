@@ -191,12 +191,21 @@ GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
 
-GC_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
+GC_EXPENSE_TYPES = [
+    "milage", "car", "hotel", "transport", "parking", "gasoline",
+    "food", "taxi", "phone", "hardware", "software", "other",
+]
 GC_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 GC_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
 GC_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
 GC_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
-GC_TEAM_MEMBERS_ROLES = ["architect", "structural engineer", "contractor", "project manager"]
+GC_TEAM_MEMBERS_ROLES = [
+    "consultant",
+    "project manager",
+    "customer",
+    "supplier",
+    "notified body",
+]
 GC_AREA_OF_EXPERTISE = ["HVAC services company", "carpenter", "energy consultancy"]
 GC_COMPANY_ROLES = ["Company Role #1", "Company Role #2", "Company Role #3"]
 GC_FUNDING_STRATEGY = [
@@ -238,7 +247,10 @@ CORE_AREA_OF_EXPERTISE = ["Software Development", "Project Management", "Busines
 CORE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 CORE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 CORE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-CORE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
+CORE_EXPENSE_TYPES = [
+    "milage", "car", "hotel", "transport", "parking", "gasoline",
+    "food", "taxi", "phone", "hardware", "software", "other",
+]
 CORE_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
 CORE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
@@ -250,7 +262,10 @@ ENTERPRISE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 ENTERPRISE_TEAM_MEMBERS_ROLES = ["architect", "developer", "project manager", "business analyst"]
 ENTERPRISE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 ENTERPRISE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-ENTERPRISE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
+ENTERPRISE_EXPENSE_TYPES = [
+    "milage", "car", "hotel", "transport", "parking", "gasoline",
+    "food", "taxi", "phone", "hardware", "software", "other",
+]
 ENTERPRISE_PROJECT_TYPES = GC_PROJECT_TYPES
 ENTERPRISE_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
 ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
