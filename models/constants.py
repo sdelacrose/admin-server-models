@@ -186,7 +186,7 @@ GC_PROJECT_DOCUMENT_TYPES = [
     "Verification document:VER",
 ]
 # Backward-compatible alias used by older callers; prefer GC_COMPANY_DOCUMENT_TYPES.
-GC_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
+GC_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
@@ -251,7 +251,7 @@ CORE_EXPENSE_TYPES = [
     "milage", "car", "hotel", "transport", "parking", "gasoline",
     "food", "taxi", "phone", "hardware", "software", "other",
 ]
-CORE_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
+CORE_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
 CORE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
 
@@ -267,7 +267,7 @@ ENTERPRISE_EXPENSE_TYPES = [
     "food", "taxi", "phone", "hardware", "software", "other",
 ]
 ENTERPRISE_PROJECT_TYPES = GC_PROJECT_TYPES
-ENTERPRISE_DOCUMENT_TYPES = list(GC_COMPANY_DOCUMENT_TYPES)
+ENTERPRISE_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
 ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
 class FeedbackStatusType(Enum):
