@@ -144,7 +144,7 @@ def update_document_status_configs(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("models", "0098_add_document_type_codes"),
+        ("models", "0099_update_company_document_types"),
     ]
 
     operations = [
