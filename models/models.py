@@ -728,11 +728,6 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
-    general_tasks = ArrayField(
-        models.CharField(max_length=255),
-        blank=True,
-        default=list,
-    )
     expense_types = ArrayField(
         models.CharField(max_length=255),
         blank=True,

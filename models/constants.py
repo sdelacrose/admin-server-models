@@ -57,23 +57,155 @@ PROJECT_MODULES = [
     "ecpmp_configurations",
 ]
 
-GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
-GC_DOCUMENT_TYPES = ["Supplier Invoice:SIN", "Customer Invoice:CIN", "Contract:CON", "Specification:SPE",
-                     "Funding Request:FUR", "Confirmation of Receipt:COR", "Funding Authorisation:FAU"] + [
-                         "Drawing:DRW", "Report:RPT", "Manual:MAN", "Procedure:PRO",
-                         "Customer Demand:CDE", "Other:OTH"
-                     ]
+GC_PROJECT_TYPES = [
+    "Engineering, Design & Studies",
+    "EPC / Turnkey Project",
+    "Construction & Installation",
+    "Commissioning & Start-up",
+    "Operations & Maintenance",
+    "Industrial Improvement",
+    "Digital, Data & IT Project",
+    "Transformation & Change",
+    "Energy & Transition Project",
+    "Infrastructure Project",
+    "Program / Multi-Project",
+    "Compliance & Regulatory Project",
+]
+LEGACY_GC_PROJECT_TYPES = ["Angebot", "iSFP", "Dachsanierung", "Other Project"]
+LEGACY_GC_DOCUMENT_TYPES = [
+    "Supplier Invoice:SIN",
+    "Customer Invoice:CIN",
+    "Contract:CON",
+    "Specification:SPE",
+    "Funding Request:FUR",
+    "Confirmation of Receipt:COR",
+    "Funding Authorisation:FAU",
+    "Drawing:DRW",
+    "Report:RPT",
+    "Manual:MAN",
+    "Procedure:PRO",
+    "Customer Demand:CDE",
+    "Other:OTH",
+    "Calendar:CAL",
+    "Revision:REV",
+]
+GC_COMPANY_DOCUMENT_TYPES = [
+    "Bonds:BND",
+    "Calculation:CAL",
+    "Cash Flow Statement:CFS",
+    "Change/Variation:CVR",
+    "Claims/extension:CLX",
+    "Collateral Warranty:CWA",
+    "Contractor Initiated Changes:CIC",
+    "Contractual Correspondence and Notices:CCN",
+    "Coordination Meetings:CME",
+    "CTS:CTS",
+    "Data Sheet:DSH",
+    "Drawing:DRW",
+    "Employer's Instructions:EIN",
+    "Final Payment:FPA",
+    "General:GEN",
+    "Hand-over:HOV",
+    "HES - PD:HES",
+    "Insurance:INS",
+    "Interim Payment App. / Payment Notice:IPA",
+    "Letter:LTR",
+    "Loss and Expense Claim:LEC",
+    "MOM:MOM",
+    "MSDS:MSD",
+    "Programme:PRG",
+    "Progress Reports:PRR",
+    "Punch list:PUL",
+    "Quality Control Surv.:QCS",
+    "Rectification Period:RCP",
+    "RFI:RFI",
+    "Schedule:SCH",
+    "Single Line Diagram:SLD",
+    "Specification:SPE",
+    "Statutory Approval or Permissions:SAP",
+    "Steering Committee Meeting:SCM",
+]
+GC_PROJECT_DOCUMENT_TYPES = [
+    "Architectural view:ARV",
+    "Area classification drawing:ACD",
+    "Cable schedule, pipe support and spring schedule:CSP",
+    "Calculations, curves, tables:CCT",
+    "Call for meeting, MoM, meeting presentation, etc.:CMM",
+    "Cause and effect chart:CEC",
+    "Contract:CON",
+    "Contracting strategy:CST",
+    "Correspondence:COR",
+    "Correspondence of contract:COC",
+    "D model:DMD",
+    "Data sheet, according to discipline:DSD",
+    "Detail drawing:DDR",
+    "Diagram; engineering, functional, block, interconnection, nodal, circuit:DIA",
+    "Drawing:DRW",
+    "Equipment layout:EQL",
+    "Estimate, budget:EBU",
+    "Fire protection drawing:FPD",
+    "Frame agreement:FRA",
+    "General and detailed specifications:GDS",
+    "General arrangement drawing (guide drawing):GAD",
+    "Heat and mass balance:HMB",
+    "Heat tracing drawing:HTD",
+    "Internal Due Diligence (IDD):IDD",
+    "Isometric drawing:ISO",
+    "ITB related (bid clarification):ITB",
+    "Laboratory results & reports:LAB",
+    "Layout of any kind (plot plan, site plan etc.):LAY",
+    "Lists of any kind, index, legend:LST",
+    "Loading diagram, loading plan, structural loads:LOD",
+    "Logic and sequence diagram:LSD",
+    "Logistic:LOG",
+    "Loop diagram:LPD",
+    "Maintenance information (e.g. Maintenance manual):MIN",
+    "Material receiving report:MRR",
+    "Material take-off (MTO):MTO",
+    "Mechanical Completion and Commissioning documents:MCC",
+    "Miscellaneous (not covered by any specific document type above):MSC",
+    "Offer/quotation:OFQ",
+    "Operational information (e.g. Operating manual):OPI",
+    "Org. chart, functional descriptions etc.:ORG",
+    "Permitting and Licensing:PAL",
+    "Piping and instrumentation diagram (PID):PID",
+    "Process flow diagram, utility flow diagram:PFD",
+    "Project control (MPR, Cost report, close-out report, etc.):PCT",
+    "Project design criteria; design basis, principal decisions, PCP:PDC",
+    "Project procedure, work instruction, manual:PPM",
+    "Purchase order:PO",
+    "Report of any kind, according to discipline:RPT",
+    "Requisition:REQ",
+    "Sales agreement (EAR or Project Agreement):SAG",
+    "Schematics:SCH",
+    "System topology, system control diagram:STD",
+    "Technical descriptions:TDE",
+    "Termination drawing, termination details:TDD",
+    "Time schedule, planning, work plan:TSP",
+    "Typical drawing, sketch:TYP",
+    "Verification document:VER",
+]
+# Backward-compatible alias used by older callers; prefer GC_COMPANY_DOCUMENT_TYPES.
+GC_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
 GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
 
-GC_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
+GC_EXPENSE_TYPES = [
+    "milage", "car", "hotel", "transport", "parking", "gasoline",
+    "food", "taxi", "phone", "hardware", "software", "other",
+]
 GC_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 GC_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-GC_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
 GC_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
 GC_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
-GC_TEAM_MEMBERS_ROLES = ["architect", "structural engineer", "contractor", "project manager"]
+GC_TEAM_MEMBERS_ROLES = [
+    "consultant",
+    "project manager",
+    "customer",
+    "supplier",
+    "notified body",
+]
 GC_AREA_OF_EXPERTISE = ["HVAC services company", "carpenter", "energy consultancy"]
 GC_COMPANY_ROLES = ["Company Role #1", "Company Role #2", "Company Role #3"]
 GC_FUNDING_STRATEGY = [
@@ -115,9 +247,11 @@ CORE_AREA_OF_EXPERTISE = ["Software Development", "Project Management", "Busines
 CORE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 CORE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 CORE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-CORE_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
-CORE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
-CORE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
+CORE_EXPENSE_TYPES = [
+    "milage", "car", "hotel", "transport", "parking", "gasoline",
+    "food", "taxi", "phone", "hardware", "software", "other",
+]
+CORE_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
 CORE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
 
@@ -128,10 +262,12 @@ ENTERPRISE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
 ENTERPRISE_TEAM_MEMBERS_ROLES = ["architect", "developer", "project manager", "business analyst"]
 ENTERPRISE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 ENTERPRISE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
-ENTERPRISE_GENERAL_TASKS = ["office", "general", "acquisition", "IT"]
-ENTERPRISE_EXPENSE_TYPES = ["milage", "parking", "train fare", "printing", "other"]
-ENTERPRISE_PROJECT_TYPES = ["Implementation", "Migration", "Integration", "Other"]
-ENTERPRISE_DOCUMENT_TYPES = ["Supplier Invoice", "Customer Invoice", "Contract", "Specification"]
+ENTERPRISE_EXPENSE_TYPES = [
+    "milage", "car", "hotel", "transport", "parking", "gasoline",
+    "food", "taxi", "phone", "hardware", "software", "other",
+]
+ENTERPRISE_PROJECT_TYPES = GC_PROJECT_TYPES
+ENTERPRISE_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
 ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
 
 class FeedbackStatusType(Enum):
