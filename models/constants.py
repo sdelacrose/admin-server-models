@@ -237,7 +237,44 @@ GC_EXPENSE_TYPES = [
 GC_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 GC_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
 GC_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
-GC_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
+GC_CONTRACT_TYPES = [
+    "Fixed Price",
+    "Time & Materials",
+    "EPC/EPCM",
+    "Subcontract",
+    "Framework Agreement",
+    "Professional Services",
+    "Technical Assistance (TA)",
+    "Turnkey",
+    "Call-Off Contract",
+    "Other",
+]
+GC_CONTRACT_STANDARDS = [
+    "FIDIC Red Book",
+    "FIDIC Yellow Book",
+    "FIDIC Silver Book",
+    "FIDIC White Book",
+    "NEC3",
+    "NEC4",
+    "BOOT",
+    "BOT",
+    "PPP",
+    "PFI",
+]
+GC_COMMERCIAL_MODELS = [
+    "Fixed Price",
+    "Time & Materials",
+    "Cost Reimbursable",
+    "Target Cost",
+    "Pain / Gain Share",
+]
+GC_SUPPORTING_AGREEMENTS = [
+    "NDA (Non-Disclosure Agreement)",
+    "Framework Agreement",
+    "Consortium Agreement",
+    "Joint Venture Agreement",
+    "Contract Amendment (Addendum)",
+]
 GC_TEAM_MEMBERS_ROLES = [
     "consultant",
     "project manager",
@@ -283,7 +320,7 @@ GC_SKILLS = [
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
 CORE_AREA_OF_EXPERTISE = ["Software Development", "Project Management", "Business Analysis"]
-CORE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
+CORE_CONTRACT_TYPES = GC_CONTRACT_TYPES
 CORE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 CORE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
 CORE_EXPENSE_TYPES = [
@@ -297,7 +334,7 @@ CORE_DOCUMENT_STATUSES = GC_DOCUMENT_STATUSES
 # Enterprise Solution Constants
 ENTERPRISE_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
 ENTERPRISE_AREA_OF_EXPERTISE = ["Enterprise Architecture", "Solution Architecture", "DevOps"]
-ENTERPRISE_CONTRACT_TYPES = ["Fixed Price", "Time and Material", "Other"]
+ENTERPRISE_CONTRACT_TYPES = GC_CONTRACT_TYPES
 ENTERPRISE_TEAM_MEMBERS_ROLES = ["architect", "developer", "project manager", "business analyst"]
 ENTERPRISE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 ENTERPRISE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]

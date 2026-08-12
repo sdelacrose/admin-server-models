@@ -10,7 +10,7 @@ from .constants import ADMIN_SERVER_MODULES, PROJECT_MODULES, SOLUTION_MODULES
 
 
 DISPLAY_FEATURE_SCHEMA_MAJOR = 1
-DISPLAY_FEATURE_REGISTRY_REVISION = 8
+DISPLAY_FEATURE_REGISTRY_REVISION = 10
 # Backward-compatible storage/API alias. New clients use schema/revision fields.
 DISPLAY_FEATURE_REGISTRY_VERSION = DISPLAY_FEATURE_REGISTRY_REVISION
 
@@ -401,6 +401,18 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         FeatureType.LINKED_OBJECT,
         parent="company.projects",
     )
+    for field_key in (
+        "contract_standard",
+        "commercial_model",
+        "supporting_agreement",
+    ):
+        add(
+            f"company.projects.{field_key}",
+            FeatureType.MODULE,
+            parent="company.projects",
+            solutions=PROJECT_SOLUTIONS,
+            permission_rule=permission(company, "projects"),
+        )
 
     add("company.financial", FeatureType.MODULE)
     purchase_orders = "company.financial.purchase_orders"

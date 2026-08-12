@@ -437,6 +437,21 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    contract_standard = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    commercial_model = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    supporting_agreement = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
     team_members_roles = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -704,6 +719,21 @@ class CompanyConfig(models.Model):
         help_text="The freelancer this configuration belongs to."
     )
     contract_type = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    contract_standard = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    commercial_model = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    supporting_agreement = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
