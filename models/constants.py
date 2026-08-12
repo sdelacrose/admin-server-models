@@ -185,7 +185,7 @@ GC_PROJECT_DOCUMENT_TYPES = [
     "Time schedule, planning, work plan:SCH",
     "Typical drawing, sketch:TYD",
     "Verification document:VED",
-    "Miscellaneous:MSC",
+    "Other:OTH",
 ]
 # Backward-compatible alias used by older callers; prefer GC_COMPANY_DOCUMENT_TYPES.
 GC_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
