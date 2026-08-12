@@ -5,6 +5,8 @@ NEW_DOCUMENT_STATUSES = [
     "Draft",
     "Under review",
     "Submitted",
+    "Approved",
+    "Sent",
     "To be updated",
     "For construction (IFC)",
     "Issued",
@@ -40,12 +42,11 @@ NEW_TRANSMITTAL_CATEGORIES = [
 
 LEGACY_DOCUMENT_STATUS_RENAMES = {
     "In review": "Under review",
+    "Complete": "Approved",
 }
 LEGACY_DOCUMENT_STATUS_DEFAULTS = {
-    "Complete",
     "Draft",
     "In review",
-    "Sent",
 }
 
 

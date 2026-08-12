@@ -193,6 +193,8 @@ GC_DOCUMENT_STATUSES = [
     "Draft",
     "Under review",
     "Submitted",
+    "Approved",
+    "Sent",
     "To be updated",
     "For construction (IFC)",
     "Issued",
