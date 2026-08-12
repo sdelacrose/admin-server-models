@@ -189,7 +189,42 @@ GC_PROJECT_DOCUMENT_TYPES = [
 ]
 # Backward-compatible alias used by older callers; prefer GC_COMPANY_DOCUMENT_TYPES.
 GC_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
-GC_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
+GC_DOCUMENT_STATUSES = [
+    "Draft",
+    "Under review",
+    "Submitted",
+    "To be updated",
+    "For construction (IFC)",
+    "Issued",
+    "Revised",
+    "Final",
+    "As-Built",
+    "On Hold",
+    "Cancelled",
+    "Archived",
+    "Other",
+]
+GC_DOCUMENT_INTERNAL_REVIEW_STATUSES = [
+    "In progress",
+    "Approved",
+    "Commented",
+    "Rejected",
+]
+GC_DOCUMENT_EXTERNAL_REVIEW_STATUSES = [
+    "In progress",
+    "Approved",
+    "Reviewed",
+    "Commented",
+    "Rejected",
+    "For information",
+    "Superseded",
+]
+GC_TRANSMITTAL_CATEGORIES = [
+    "Not sent",
+    "Available",
+    "For review",
+    "For information",
+]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
 
@@ -254,7 +289,7 @@ CORE_EXPENSE_TYPES = [
     "food", "taxi", "phone", "hardware", "software", "other",
 ]
 CORE_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
-CORE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
+CORE_DOCUMENT_STATUSES = GC_DOCUMENT_STATUSES
 
 
 # Enterprise Solution Constants
@@ -270,7 +305,7 @@ ENTERPRISE_EXPENSE_TYPES = [
 ]
 ENTERPRISE_PROJECT_TYPES = GC_PROJECT_TYPES
 ENTERPRISE_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
-ENTERPRISE_DOCUMENT_STATUSES = ["Complete", "Draft", "In review", "Sent"]
+ENTERPRISE_DOCUMENT_STATUSES = GC_DOCUMENT_STATUSES
 
 class FeedbackStatusType(Enum):
     OPEN = "open"

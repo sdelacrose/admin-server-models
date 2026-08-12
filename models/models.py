@@ -492,6 +492,21 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    document_internal_review_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    document_external_review_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    transmittal_category = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
     priority_levels = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -744,6 +759,21 @@ class CompanyConfig(models.Model):
         default=list,
     )
     document_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    document_internal_review_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    document_external_review_status = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    transmittal_category = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
