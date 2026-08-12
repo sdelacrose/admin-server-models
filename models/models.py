@@ -553,6 +553,7 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    nested_configurations = models.JSONField(default=dict, blank=True)
     rooms = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -823,6 +824,7 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
+    nested_configurations = models.JSONField(default=dict, blank=True)
     salutation = ArrayField(
         models.CharField(max_length=255),
         blank=True,
