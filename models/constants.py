@@ -267,7 +267,7 @@ GC_MAJOR_PROJECT_MODELS = [
 GC_CONTRACT_STANDARDS = GC_INTERNATIONAL_STANDARDS + GC_MAJOR_PROJECT_MODELS
 GC_COMMERCIAL_MODELS = [
     "Fixed Price",
-    "Time and Material",
+    "Time & Material",
     "Cost Reimbursable",
     "Target Cost",
     "Pain / Gain Share",
