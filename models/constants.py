@@ -249,18 +249,22 @@ GC_CONTRACT_TYPES = [
     "Call-Off Contract",
     "Other",
 ]
-GC_CONTRACT_STANDARDS = [
+GC_INTERNATIONAL_STANDARDS = [
     "FIDIC Red Book",
     "FIDIC Yellow Book",
     "FIDIC Silver Book",
     "FIDIC White Book",
     "NEC3",
     "NEC4",
+]
+GC_MAJOR_PROJECT_MODELS = [
     "BOOT",
     "BOT",
     "PPP",
     "PFI",
 ]
+# Backward-compatible alias for older code/migrations still referencing the combined list.
+GC_CONTRACT_STANDARDS = GC_INTERNATIONAL_STANDARDS + GC_MAJOR_PROJECT_MODELS
 GC_COMMERCIAL_MODELS = [
     "Fixed Price",
     "Time and Material",

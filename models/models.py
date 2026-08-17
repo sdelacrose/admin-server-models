@@ -437,7 +437,12 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
-    contract_standard = ArrayField(
+    international_standard = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    major_project_model = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
@@ -724,7 +729,12 @@ class CompanyConfig(models.Model):
         blank=True,
         default=list,
     )
-    contract_standard = ArrayField(
+    international_standard = ArrayField(
+        models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    major_project_model = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,
