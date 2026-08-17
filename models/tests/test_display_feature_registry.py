@@ -40,8 +40,8 @@ class DisplayFeatureRegistryTests(TestCase):
         validate_feature_registry(DISPLAY_FEATURES)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 10)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 10)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 11)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 11)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -51,8 +51,8 @@ class DisplayFeatureRegistryTests(TestCase):
             if key == "company" or key.startswith("company.")
         }
 
-        self.assertEqual(len(self.energy_keys), 196)
-        self.assertEqual(len(self.enterprise_keys), 195)
+        self.assertEqual(len(self.energy_keys), 197)
+        self.assertEqual(len(self.enterprise_keys), 196)
         self.assertEqual(len(self.core_keys), 102)
         self.assertEqual(self.energy_keys, all_keys)
         self.assertEqual(
@@ -63,7 +63,8 @@ class DisplayFeatureRegistryTests(TestCase):
             self.core_keys,
             company_keys
             - {
-                "company.projects.contract_standard",
+                "company.projects.international_standard",
+                "company.projects.major_project_model",
                 "company.projects.commercial_model",
                 "company.projects.supporting_agreement",
             },
@@ -81,7 +82,8 @@ class DisplayFeatureRegistryTests(TestCase):
             "project",
         )
         for field_key in (
-            "contract_standard",
+            "international_standard",
+            "major_project_model",
             "commercial_model",
             "supporting_agreement",
         ):
