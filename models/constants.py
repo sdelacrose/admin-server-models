@@ -266,7 +266,7 @@ GC_MAJOR_PROJECT_MODELS = [
 # Backward-compatible alias for older code/migrations still referencing the combined list.
 GC_CONTRACT_STANDARDS = GC_INTERNATIONAL_STANDARDS + GC_MAJOR_PROJECT_MODELS
 GC_COMMERCIAL_MODELS = [
-    "Fixed Price",
+    "Fixed Price Model",
     "Time & Material",
     "Cost Reimbursable",
     "Target Cost",
