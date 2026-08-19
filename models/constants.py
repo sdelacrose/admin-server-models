@@ -239,7 +239,7 @@ GC_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
 GC_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
 GC_CONTRACT_TYPES = [
     "Fixed Price",
-    "Time and Material",
+    "Time and Materials",
     "EPC/EPCM",
     "Subcontract",
     "Framework Agreement",
@@ -267,7 +267,7 @@ GC_MAJOR_PROJECT_MODELS = [
 GC_CONTRACT_STANDARDS = GC_INTERNATIONAL_STANDARDS + GC_MAJOR_PROJECT_MODELS
 GC_COMMERCIAL_MODELS = [
     "Fixed Price Model",
-    "Time & Material",
+    "Time & Materials",
     "Cost Reimbursable",
     "Target Cost",
     "Pain / Gain Share",
