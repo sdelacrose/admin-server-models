@@ -1,0 +1,30 @@
+from django.db import migrations, models
+
+
+def update_registry_version(apps, schema_editor):
+    configuration = apps.get_model("models", "SolutionDisplayConfiguration")
+    configuration.objects.update(registry_version=12)
+
+
+def restore_registry_version(apps, schema_editor):
+    configuration = apps.get_model("models", "SolutionDisplayConfiguration")
+    configuration.objects.update(registry_version=11)
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("models", "0112_configuration_visibility"),
+    ]
+
+    operations = [
+        migrations.AlterField(
+            model_name="solutiondisplayconfiguration",
+            name="registry_version",
+            field=models.PositiveIntegerField(default=12),
+        ),
+        migrations.RunPython(
+            update_registry_version,
+            reverse_code=restore_registry_version,
+        ),
+    ]

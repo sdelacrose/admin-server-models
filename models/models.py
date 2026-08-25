@@ -574,6 +574,7 @@ class GlobalConfig(models.Model):
         default=list,
     )
     nested_configurations = models.JSONField(default=dict, blank=True)
+    configuration_visibility = models.JSONField(default=dict, blank=True)
     rooms = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -865,6 +866,7 @@ class CompanyConfig(models.Model):
         default=list,
     )
     nested_configurations = models.JSONField(default=dict, blank=True)
+    configuration_visibility = models.JSONField(default=dict, blank=True)
     salutation = ArrayField(
         models.CharField(max_length=255),
         blank=True,

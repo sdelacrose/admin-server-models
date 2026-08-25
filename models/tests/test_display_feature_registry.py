@@ -40,8 +40,8 @@ class DisplayFeatureRegistryTests(TestCase):
         validate_feature_registry(DISPLAY_FEATURES)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 11)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 11)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 12)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 12)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -51,24 +51,15 @@ class DisplayFeatureRegistryTests(TestCase):
             if key == "company" or key.startswith("company.")
         }
 
-        self.assertEqual(len(self.energy_keys), 197)
-        self.assertEqual(len(self.enterprise_keys), 196)
+        self.assertEqual(len(self.energy_keys), 193)
+        self.assertEqual(len(self.enterprise_keys), 192)
         self.assertEqual(len(self.core_keys), 102)
         self.assertEqual(self.energy_keys, all_keys)
         self.assertEqual(
             self.energy_keys - self.enterprise_keys,
             {"project.funding"},
         )
-        self.assertEqual(
-            self.core_keys,
-            company_keys
-            - {
-                "company.projects.international_standard",
-                "company.projects.major_project_model",
-                "company.projects.commercial_model",
-                "company.projects.supporting_agreement",
-            },
-        )
+        self.assertEqual(self.core_keys, company_keys)
         self.assertNotIn("project", self.core_keys)
         self.assertFalse(any(key.startswith("project.") for key in self.core_keys))
 
@@ -87,9 +78,7 @@ class DisplayFeatureRegistryTests(TestCase):
             "commercial_model",
             "supporting_agreement",
         ):
-            feature = DISPLAY_FEATURE_BY_KEY[f"company.projects.{field_key}"]
-            self.assertEqual(feature.parent_key, "company.projects")
-            self.assertEqual(feature.feature_type, FeatureType.MODULE)
+            self.assertNotIn(f"company.projects.{field_key}", DISPLAY_FEATURE_BY_KEY)
             self.assertNotIn(f"project.{field_key}", DISPLAY_FEATURE_BY_KEY)
 
     def test_company_dashboard_is_available_without_module_permission(self):
