@@ -10,7 +10,7 @@ from .constants import ADMIN_SERVER_MODULES, PROJECT_MODULES, SOLUTION_MODULES
 
 
 DISPLAY_FEATURE_SCHEMA_MAJOR = 1
-DISPLAY_FEATURE_REGISTRY_REVISION = 12
+DISPLAY_FEATURE_REGISTRY_REVISION = 13
 # Backward-compatible storage/API alias. New clients use schema/revision fields.
 DISPLAY_FEATURE_REGISTRY_VERSION = DISPLAY_FEATURE_REGISTRY_REVISION
 
@@ -300,7 +300,10 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         company_assembly_catalog,
         FeatureType.SUBMODULE,
         parent="company.product_services",
-        permission_rule=permission(company, "company_assembly_catalog"),
+        permission_rules=(
+            permission(company, "company_assembly_catalog"),
+            permission(company, "aas_models"),
+        ),
     )
     for tab in (
         "list",
@@ -314,6 +317,14 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
             f"{company_assembly_catalog}.tabs.{tab}",
             FeatureType.TAB,
             parent=company_assembly_catalog,
+            permission_rule=permission(
+                company,
+                (
+                    "aas_models"
+                    if tab == "aas_models"
+                    else "company_assembly_catalog"
+                ),
+            ),
         )
     for linked_object in ("comments", "documents", "structure"):
         add(
@@ -712,7 +723,10 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         FeatureType.SUBMODULE,
         parent=project_products,
         solutions=PROJECT_SOLUTIONS,
-        permission_rule=permission(project, "project_assembly_catalog"),
+        permission_rules=(
+            permission(project, "project_assembly_catalog"),
+            permission(company, "aas_models"),
+        ),
     )
     for tab in (
         "search",
@@ -728,6 +742,14 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
             FeatureType.TAB,
             parent=project_assembly_catalog,
             solutions=PROJECT_SOLUTIONS,
+            permission_rule=permission(
+                company if tab == "aas_models" else project,
+                (
+                    "aas_models"
+                    if tab == "aas_models"
+                    else "project_assembly_catalog"
+                ),
+            ),
         )
     for linked_object in (
         "comments",
