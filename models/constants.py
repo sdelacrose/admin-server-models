@@ -35,6 +35,7 @@ SOLUTION_MODULES = [
     "company_configurations",
     "available_product_parts",
     "company_assembly_catalog",
+    "aas_models",
     "machines",
     "equipments",
 ]
