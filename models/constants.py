@@ -121,6 +121,8 @@ GC_COMPANY_DOCUMENT_TYPES = [
     "Steering Committee Meeting:SCM",
     "Other:OTH",
 ]
+CUSTOMER_DEMAND_DOCUMENT_TYPE = "Customer Demand:CDE"
+
 GC_PROJECT_DOCUMENT_TYPES = [
     "3D model:DMO",
     "Architectural view:ARV",
@@ -185,6 +187,7 @@ GC_PROJECT_DOCUMENT_TYPES = [
     "Time schedule, planning, work plan:SCH",
     "Typical drawing, sketch:TYD",
     "Verification document:VED",
+    CUSTOMER_DEMAND_DOCUMENT_TYPE,
     "Other:OTH",
 ]
 # Backward-compatible alias used by older callers; prefer GC_COMPANY_DOCUMENT_TYPES.
