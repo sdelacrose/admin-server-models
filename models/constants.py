@@ -93,6 +93,8 @@ LEGACY_GC_DOCUMENT_TYPES = [
     "Calendar:CAL",
     "Revision:REV",
 ]
+CUSTOMER_DEMAND_DOCUMENT_TYPE = "Customer Demand:CDE"
+
 GC_COMPANY_DOCUMENT_TYPES = [
     "Bonds:BON",
     "Cash Flow Statement:SFS",
@@ -123,10 +125,9 @@ GC_COMPANY_DOCUMENT_TYPES = [
     "Schedule:SCH",
     "Statutory Approval or Permission:SAP",
     "Steering Committee Meeting:SCM",
+    CUSTOMER_DEMAND_DOCUMENT_TYPE,
     "Other:OTH",
 ]
-CUSTOMER_DEMAND_DOCUMENT_TYPE = "Customer Demand:CDE"
-
 GC_PROJECT_DOCUMENT_TYPES = [
     "3D model:DMO",
     "Architectural view:ARV",
