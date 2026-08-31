@@ -38,10 +38,16 @@ class DisplayFeatureRegistryTests(TestCase):
 
     def test_canonical_registry_is_valid(self):
         validate_feature_registry(DISPLAY_FEATURES)
+
+    def test_project_content_features_are_registered(self):
+        keys = {feature.key for feature in DISPLAY_FEATURES}
+        self.assertIn("company.configuration.document_templates", keys)
+        self.assertIn("project.documents.generated_content", keys)
+        self.assertIn("project.execution.acceptance_tests", keys)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 12)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 12)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 14)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 14)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -51,9 +57,9 @@ class DisplayFeatureRegistryTests(TestCase):
             if key == "company" or key.startswith("company.")
         }
 
-        self.assertEqual(len(self.energy_keys), 193)
-        self.assertEqual(len(self.enterprise_keys), 192)
-        self.assertEqual(len(self.core_keys), 102)
+        self.assertEqual(len(self.energy_keys), 196)
+        self.assertEqual(len(self.enterprise_keys), 195)
+        self.assertEqual(len(self.core_keys), 103)
         self.assertEqual(self.energy_keys, all_keys)
         self.assertEqual(
             self.energy_keys - self.enterprise_keys,
@@ -230,6 +236,10 @@ class DisplayFeatureRegistryTests(TestCase):
 
     def test_parent_features_preserve_alternative_permission_modules(self):
         expected_modules = {
+            "company.product_services.assembly_catalog": {
+                "company_assembly_catalog",
+                "aas_models",
+            },
             "company.financial.costs_management": {
                 "invoice",
                 "expense_booking",
@@ -246,6 +256,10 @@ class DisplayFeatureRegistryTests(TestCase):
                 "milestone_management",
                 "phases_management",
             },
+            "project.product_services.assembly_catalog": {
+                "project_assembly_catalog",
+                "aas_models",
+            },
         }
 
         for key, modules in expected_modules.items():
@@ -253,6 +267,32 @@ class DisplayFeatureRegistryTests(TestCase):
                 {rule.module for rule in DISPLAY_FEATURE_BY_KEY[key].permissions},
                 modules,
             )
+
+    def test_assembly_catalog_tabs_separate_catalog_and_aas_permissions(self):
+        expected_rules = {
+            "company.product_services.assembly_catalog.tabs.list": (
+                PermissionScope.COMPANY,
+                "company_assembly_catalog",
+            ),
+            "company.product_services.assembly_catalog.tabs.aas_models": (
+                PermissionScope.COMPANY,
+                "aas_models",
+            ),
+            "project.product_services.assembly_catalog.tabs.list": (
+                PermissionScope.PROJECT,
+                "project_assembly_catalog",
+            ),
+            "project.product_services.assembly_catalog.tabs.aas_models": (
+                PermissionScope.COMPANY,
+                "aas_models",
+            ),
+        }
+
+        for key, (scope, module) in expected_rules.items():
+            permission_rule = DISPLAY_FEATURE_BY_KEY[key].permission
+            self.assertIsNotNone(permission_rule)
+            self.assertEqual(permission_rule.scope, scope)
+            self.assertEqual(permission_rule.module, module)
 
     def test_duplicate_keys_are_rejected(self):
         duplicate = replace(DISPLAY_FEATURES[0])

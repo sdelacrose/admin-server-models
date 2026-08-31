@@ -35,6 +35,8 @@ SOLUTION_MODULES = [
     "company_configurations",
     "available_product_parts",
     "company_assembly_catalog",
+    "aas_models",
+    "project_content",
     "machines",
     "equipments",
 ]
@@ -55,6 +57,8 @@ PROJECT_MODULES = [
     "phases_management",
     "milestone_management",
     "ecpmp_configurations",
+    "project_content",
+    "acceptance_tests",
 ]
 
 GC_PROJECT_TYPES = [
