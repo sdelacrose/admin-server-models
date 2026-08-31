@@ -462,11 +462,6 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
-    area_of_expertise = ArrayField(
-        models.CharField(max_length=255),
-        blank=True,
-        default=list,
-    )
     company_roles = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -585,6 +580,91 @@ class GlobalConfig(models.Model):
         blank=True,
         default=default_skills,
     )
+
+
+class ProjectConfigTemplate(models.Model):
+    """Tenant-level template used to initialize and sync project configs."""
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="project_config_template",
+    )
+    company_profile = models.OneToOneField(
+        CompanyProfile,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="project_config_template",
+    )
+    team_members_roles = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    funding_strategy = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    status_options = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    demand_status_options = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    requirement_status_options = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    bom_status_options = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    reminder_settings = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    document_types = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    document_status = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    document_internal_review_status = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    document_external_review_status = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    transmittal_category = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    priority_levels = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    project_service_types = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    labels = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    document_categories = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    document_disciplines = ArrayField(
+        models.CharField(max_length=255), blank=True, default=list
+    )
+    nested_configurations = models.JSONField(default=dict, blank=True)
+    skills = ArrayField(
+        models.CharField(max_length=255), blank=True, default=default_skills
+    )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(user__isnull=False, company_profile__isnull=True)
+                    | models.Q(user__isnull=True, company_profile__isnull=False)
+                ),
+                name="project_config_template_single_owner",
+            )
+        ]
 
 
 class SupplierPaymentMethod(models.Model):
@@ -751,11 +831,6 @@ class CompanyConfig(models.Model):
         default=list,
     )
     team_members_roles = ArrayField(
-        models.CharField(max_length=255),
-        blank=True,
-        default=list,
-    )
-    area_of_expertise = ArrayField(
         models.CharField(max_length=255),
         blank=True,
         default=list,

@@ -289,7 +289,6 @@ GC_TEAM_MEMBERS_ROLES = [
     "supplier",
     "notified body",
 ]
-GC_AREA_OF_EXPERTISE = ["HVAC services company", "carpenter", "energy consultancy"]
 GC_COMPANY_ROLES = ["Company Role #1", "Company Role #2", "Company Role #3"]
 GC_FUNDING_STRATEGY = [
                 "GEG Energy efficient Building 40", "GEG Energy efficient Building 40 EE",
@@ -305,7 +304,7 @@ GC_PURCHASE_ORDER_STATUS = ["Draft", "Under Approval", "Approved", "Issued", "Cl
 GC_PROJECT_SERVICE_TYPES = []
 
 # Document Numbering System Constants
-GC_DOCUMENT_CATEGORIES = ["General:GEN", "Design:DES", "Technical:TEC", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
+GC_DOCUMENT_CATEGORIES = ["General:GAD", "Design:DTS", "Technical:TMP", "Manual:MAN", "Procedure:PRO", "Other:OTH"]
 GC_DOCUMENT_DISCIPLINES = ["Electrical:EL", "Mechanical:ME", "Hydraulic:HY", "Architectural:AR", "Structural:ST", "Plumbing:PL", "HVAC:HV", "Other:OTH"]
 GC_SALUTATIONS = ["Mr", "Mrs", "Miss", "X"]
 GC_ROOMS = ["ROOM 1", "ROOM 2", "ROOM 3"]
@@ -326,7 +325,6 @@ GC_SKILLS = [
 
 # Core Solution Constants
 CORE_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
-CORE_AREA_OF_EXPERTISE = ["Software Development", "Project Management", "Business Analysis"]
 CORE_CONTRACT_TYPES = GC_CONTRACT_TYPES
 CORE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
 CORE_INVOICE_STATUS = ["open", "issued", "due", "overdue", "paid", "closed"]
@@ -340,7 +338,6 @@ CORE_DOCUMENT_STATUSES = GC_DOCUMENT_STATUSES
 
 # Enterprise Solution Constants
 ENTERPRISE_STATUS_OPTIONS = ["open:#99dce8", "in progress:#fff3ad", "closed:#bdefe0"]
-ENTERPRISE_AREA_OF_EXPERTISE = ["Enterprise Architecture", "Solution Architecture", "DevOps"]
 ENTERPRISE_CONTRACT_TYPES = GC_CONTRACT_TYPES
 ENTERPRISE_TEAM_MEMBERS_ROLES = ["architect", "developer", "project manager", "business analyst"]
 ENTERPRISE_REMINDER_SETTINGS = ["none", "1 day", "2 days", "1 week", "2 weeks"]
