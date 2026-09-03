@@ -58,7 +58,6 @@ PROJECT_MODULES = [
     "milestone_management",
     "ecpmp_configurations",
     "project_content",
-    "acceptance_tests",
 ]
 
 GC_PROJECT_TYPES = [

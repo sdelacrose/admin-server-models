@@ -43,11 +43,11 @@ class DisplayFeatureRegistryTests(TestCase):
         keys = {feature.key for feature in DISPLAY_FEATURES}
         self.assertIn("company.configuration.document_templates", keys)
         self.assertIn("project.documents.generated_content", keys)
-        self.assertIn("project.execution.acceptance_tests", keys)
+        self.assertNotIn("project.execution.acceptance_tests", keys)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 15)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 15)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 16)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 16)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -57,8 +57,8 @@ class DisplayFeatureRegistryTests(TestCase):
             if key == "company" or key.startswith("company.")
         }
 
-        self.assertEqual(len(self.energy_keys), 197)
-        self.assertEqual(len(self.enterprise_keys), 196)
+        self.assertEqual(len(self.energy_keys), 196)
+        self.assertEqual(len(self.enterprise_keys), 195)
         self.assertEqual(len(self.core_keys), 103)
         self.assertEqual(self.energy_keys, all_keys)
         self.assertEqual(
