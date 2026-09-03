@@ -46,8 +46,8 @@ class DisplayFeatureRegistryTests(TestCase):
         self.assertIn("project.execution.acceptance_tests", keys)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 14)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 14)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 15)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 15)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -57,8 +57,8 @@ class DisplayFeatureRegistryTests(TestCase):
             if key == "company" or key.startswith("company.")
         }
 
-        self.assertEqual(len(self.energy_keys), 196)
-        self.assertEqual(len(self.enterprise_keys), 195)
+        self.assertEqual(len(self.energy_keys), 197)
+        self.assertEqual(len(self.enterprise_keys), 196)
         self.assertEqual(len(self.core_keys), 103)
         self.assertEqual(self.energy_keys, all_keys)
         self.assertEqual(
@@ -156,6 +156,21 @@ class DisplayFeatureRegistryTests(TestCase):
             "project.action_items.linked.dependents",
         ):
             self.assertTrue(DISPLAY_FEATURE_BY_KEY[key].default_visible)
+
+    def test_project_action_item_requirements_feature_uses_requirement_dependency(self):
+        key = "project.action_items.linked.requirements"
+
+        self.assertIn(key, self.energy_keys)
+        self.assertTrue(DISPLAY_FEATURE_BY_KEY[key].default_visible)
+        self.assertEqual(
+            DISPLAY_FEATURE_BY_KEY[key].dependencies,
+            ("project.system_requirements.technical_requirements",),
+        )
+        permission_rule = DISPLAY_FEATURE_BY_KEY[key].permission
+        self.assertIsNotNone(permission_rule)
+        self.assertEqual(permission_rule.scope.value, "project")
+        self.assertEqual(permission_rule.module, "requirements")
+        self.assertEqual(permission_rule.actions, ("view",))
 
     def test_confirmed_linked_features_are_registered(self):
         expected_keys = {
