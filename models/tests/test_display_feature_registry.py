@@ -43,11 +43,11 @@ class DisplayFeatureRegistryTests(TestCase):
         keys = {feature.key for feature in DISPLAY_FEATURES}
         self.assertIn("company.configuration.document_templates", keys)
         self.assertIn("project.documents.generated_content", keys)
-        self.assertIn("project.execution.acceptance_tests", keys)
+        self.assertNotIn("project.execution.acceptance_tests", keys)
         self.assertEqual(len(DISPLAY_FEATURES), len(DISPLAY_FEATURE_BY_KEY))
         self.assertEqual(DISPLAY_FEATURE_SCHEMA_MAJOR, 1)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 14)
-        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 14)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_REVISION, 16)
+        self.assertEqual(DISPLAY_FEATURE_REGISTRY_VERSION, 16)
 
     def test_solution_catalogs_match_solution_profiles(self):
         all_keys = {feature.key for feature in DISPLAY_FEATURES}
@@ -156,6 +156,21 @@ class DisplayFeatureRegistryTests(TestCase):
             "project.action_items.linked.dependents",
         ):
             self.assertTrue(DISPLAY_FEATURE_BY_KEY[key].default_visible)
+
+    def test_project_action_item_requirements_feature_uses_requirement_dependency(self):
+        key = "project.action_items.linked.requirements"
+
+        self.assertIn(key, self.energy_keys)
+        self.assertTrue(DISPLAY_FEATURE_BY_KEY[key].default_visible)
+        self.assertEqual(
+            DISPLAY_FEATURE_BY_KEY[key].dependencies,
+            ("project.system_requirements.technical_requirements",),
+        )
+        permission_rule = DISPLAY_FEATURE_BY_KEY[key].permission
+        self.assertIsNotNone(permission_rule)
+        self.assertEqual(permission_rule.scope.value, "project")
+        self.assertEqual(permission_rule.module, "requirements")
+        self.assertEqual(permission_rule.actions, ("view",))
 
     def test_confirmed_linked_features_are_registered(self):
         expected_keys = {

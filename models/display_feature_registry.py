@@ -10,7 +10,7 @@ from .constants import ADMIN_SERVER_MODULES, PROJECT_MODULES, SOLUTION_MODULES
 
 
 DISPLAY_FEATURE_SCHEMA_MAJOR = 1
-DISPLAY_FEATURE_REGISTRY_REVISION = 14
+DISPLAY_FEATURE_REGISTRY_REVISION = 16
 # Backward-compatible storage/API alias. New clients use schema/revision fields.
 DISPLAY_FEATURE_REGISTRY_VERSION = DISPLAY_FEATURE_REGISTRY_REVISION
 
@@ -584,12 +584,18 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         "structure",
         "predecessors",
         "dependents",
+        "requirements",
     ):
         add(
             f"project.action_items.linked.{linked_object}",
             FeatureType.LINKED_OBJECT,
             parent="project.action_items",
             solutions=PROJECT_SOLUTIONS,
+            permission_rule=(
+                permission(project, "requirements")
+                if linked_object == "requirements"
+                else None
+            ),
         )
 
     add(
@@ -811,7 +817,6 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
     )
     for module in (
         "transport",
-        "acceptance_tests",
         "sourcing",
         "procurement",
         "manufacturing",
@@ -826,13 +831,7 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
             solutions=PROJECT_SOLUTIONS,
             permission_rule=permission(
                 project,
-                (
-                    "transports"
-                    if module == "transport"
-                    else "acceptance_tests"
-                    if module == "acceptance_tests"
-                    else "project"
-                ),
+                "transports" if module == "transport" else "project",
             ),
         )
 
