@@ -24,6 +24,6 @@ def remove_permission(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("models", "0115_display_configuration_registry_version_15")]
+    dependencies = [("models", "0122_display_configuration_registry_version_15")]
 
     operations = [migrations.RunPython(create_permission, remove_permission)]
