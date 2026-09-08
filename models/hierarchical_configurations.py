@@ -305,8 +305,14 @@ DEFAULT_NESTED_CONFIGURATIONS = {
 }
 
 NESTED_CONFIGURATION_DEFINITIONS = {
-    DOCUMENT_DISCIPLINES_KEY: {"child_code_required": True},
-    AREA_OF_EXPERTISE_KEY: {"child_code_required": False},
+    DOCUMENT_DISCIPLINES_KEY: {
+        "child_code_required": True,
+        "allow_custom_nodes": True,
+    },
+    AREA_OF_EXPERTISE_KEY: {
+        "child_code_required": False,
+        "allow_custom_nodes": False,
+    },
 }
 
 
@@ -376,6 +382,7 @@ def normalize_nested_configuration(
     child_ids = set()
     child_labels = set()
     child_codes = set()
+    default_groups, default_children, _ = _default_indexes(config_key)
 
     for raw_group in raw_groups:
         if not isinstance(raw_group, dict):
@@ -383,6 +390,13 @@ def normalize_nested_configuration(
 
         group_id = _node_id(raw_group.get("id"))
         group_label = _required_text(raw_group.get("label"), "Group label")
+        if (
+            not definition["allow_custom_nodes"]
+            and group_id not in default_groups
+        ):
+            raise HierarchicalConfigurationError(
+                f"Custom groups are not allowed for {config_key}: {group_label}."
+            )
         normalized_group_label = group_label.casefold()
         if group_id in group_ids or group_id in child_ids:
             raise HierarchicalConfigurationError(f"Duplicate node id: {group_id}.")
@@ -407,6 +421,13 @@ def normalize_nested_configuration(
 
             child_id = _node_id(raw_child.get("id"))
             child_label = _required_text(raw_child.get("label"), "Child label")
+            if (
+                not definition["allow_custom_nodes"]
+                and child_id not in default_children
+            ):
+                raise HierarchicalConfigurationError(
+                    f"Custom options are not allowed for {config_key}: {child_label}."
+                )
             normalized_child_label = child_label.casefold()
             if child_id in child_ids or child_id in group_ids:
                 raise HierarchicalConfigurationError(f"Duplicate node id: {child_id}.")
@@ -553,6 +574,74 @@ def resolve_nested_configurations(configurations):
             configuration,
         )
     return resolved
+
+
+def validate_area_of_expertise_selection(
+    main_area,
+    sub_area,
+    *,
+    nested_configurations=None,
+    configuration_visibility=None,
+):
+    main_id = str(main_area or "").strip() or None
+    sub_id = str(sub_area or "").strip() or None
+
+    if not main_id:
+        if sub_id:
+            raise HierarchicalConfigurationError(
+                "Sub-Area of Expertise requires a Main Area of Expertise."
+            )
+        return None, None
+
+    hierarchy = resolve_nested_configurations(nested_configurations).get(
+        AREA_OF_EXPERTISE_KEY,
+        {},
+    )
+    groups = {
+        group.get("id"): group
+        for group in hierarchy.get("groups", [])
+        if isinstance(group, dict) and group.get("id")
+    }
+    main_group = groups.get(main_id)
+    if main_group is None:
+        raise HierarchicalConfigurationError(
+            "Invalid Main Area of Expertise selection."
+        )
+
+    visibility = (
+        configuration_visibility
+        if isinstance(configuration_visibility, dict)
+        else {}
+    )
+    expertise_visibility = visibility.get(AREA_OF_EXPERTISE_KEY, {})
+    if not isinstance(expertise_visibility, dict):
+        expertise_visibility = {}
+    disabled_groups = set(expertise_visibility.get("disabled_group_ids", []))
+    disabled_children = set(expertise_visibility.get("disabled_child_ids", []))
+
+    if main_id in disabled_groups:
+        raise HierarchicalConfigurationError(
+            "The selected Main Area of Expertise is disabled."
+        )
+
+    if not sub_id:
+        return main_id, None
+
+    child_ids = {
+        child.get("id")
+        for child in main_group.get("children", [])
+        if isinstance(child, dict) and child.get("id")
+    }
+    if sub_id not in child_ids:
+        raise HierarchicalConfigurationError(
+            "The selected Sub-Area of Expertise does not belong to the selected Main Area."
+        )
+    if sub_id in disabled_children:
+        raise HierarchicalConfigurationError(
+            "The selected Sub-Area of Expertise is disabled."
+        )
+
+    return main_id, sub_id
 
 
 def flatten_nested_configurations(configurations):
