@@ -1,21 +1,17 @@
+from copy import deepcopy
 from importlib import import_module
 from unittest import TestCase
-
-from models.hierarchical_configurations import (
-    AREA_OF_EXPERTISE_KEY,
-    get_default_nested_configuration,
-)
-
 
 cleanup_migration = import_module(
     "models.migrations.0125_area_of_expertise_profile_fields"
 )
+AREA_OF_EXPERTISE_KEY = cleanup_migration.AREA_OF_EXPERTISE_KEY
 
 
 class AreaOfExpertiseCleanupMigrationTests(TestCase):
     def test_cleanup_removes_custom_nodes_and_preserves_default_visibility(self):
-        default = get_default_nested_configuration(AREA_OF_EXPERTISE_KEY)
-        custom_area = get_default_nested_configuration(AREA_OF_EXPERTISE_KEY)
+        default = deepcopy(cleanup_migration.AREA_OF_EXPERTISE_HIERARCHY_V1)
+        custom_area = deepcopy(cleanup_migration.AREA_OF_EXPERTISE_HIERARCHY_V1)
         custom_area["groups"].append(
             {
                 "id": "custom-group",
@@ -56,7 +52,7 @@ class AreaOfExpertiseCleanupMigrationTests(TestCase):
         )
 
     def test_cleanup_removes_empty_area_visibility(self):
-        default = get_default_nested_configuration(AREA_OF_EXPERTISE_KEY)
+        default = deepcopy(cleanup_migration.AREA_OF_EXPERTISE_HIERARCHY_V1)
 
         _, visibility = cleanup_migration._clean_area_of_expertise(
             {},
