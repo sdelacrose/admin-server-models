@@ -14,10 +14,59 @@ from models.hierarchical_configurations import (
     normalize_nested_configuration,
     prepare_nested_configurations_update,
     resolve_nested_configurations,
+    validate_area_of_expertise_selection,
 )
 
 
 class HierarchicalConfigurationTests(TestCase):
+    def test_area_of_expertise_selection_accepts_matching_ids(self):
+        self.assertEqual(
+            validate_area_of_expertise_selection(
+                " project-program-management ",
+                " expertise-project-management ",
+            ),
+            ("project-program-management", "expertise-project-management"),
+        )
+
+    def test_area_of_expertise_selection_rejects_sub_area_without_main(self):
+        with self.assertRaisesRegex(
+            HierarchicalConfigurationError,
+            "requires a Main Area",
+        ):
+            validate_area_of_expertise_selection(None, "program-management")
+
+    def test_area_of_expertise_selection_rejects_wrong_parent(self):
+        with self.assertRaisesRegex(
+            HierarchicalConfigurationError,
+            "does not belong",
+        ):
+            validate_area_of_expertise_selection(
+                "project-program-management",
+                "engineering-management",
+            )
+
+    def test_area_of_expertise_selection_rejects_disabled_nodes(self):
+        visibility = {
+            AREA_OF_EXPERTISE_KEY: {
+                "disabled_group_ids": ["project-program-management"],
+                "disabled_child_ids": ["engineering-management"],
+            }
+        }
+
+        with self.assertRaisesRegex(HierarchicalConfigurationError, "disabled"):
+            validate_area_of_expertise_selection(
+                "project-program-management",
+                "program-management",
+                configuration_visibility=visibility,
+            )
+
+        with self.assertRaisesRegex(HierarchicalConfigurationError, "disabled"):
+            validate_area_of_expertise_selection(
+                "engineering-technical-management",
+                "engineering-management",
+                configuration_visibility=visibility,
+            )
+
     def test_default_document_disciplines_match_functional_specification(self):
         hierarchy = get_default_nested_configuration(DOCUMENT_DISCIPLINES_KEY)
         group_labels = [group["label"] for group in hierarchy["groups"]]
@@ -176,41 +225,48 @@ class HierarchicalConfigurationTests(TestCase):
         )
 
     def test_normalization_discards_frontend_translation_metadata(self):
+        hierarchy = get_default_nested_configuration(AREA_OF_EXPERTISE_KEY)
+        hierarchy["groups"][0]["translations"] = {"fr": "Gestion de projet"}
+        hierarchy["groups"][0]["children"][0]["translations"] = {
+            "fr": "Gestion de projet"
+        }
+
         normalized = normalize_nested_configuration(
             AREA_OF_EXPERTISE_KEY,
-            {
-                "groups": [
-                    {
-                        "id": "custom-group",
-                        "label": "Custom Group",
-                        "translations": {"fr": "Groupe personnalisé"},
-                        "children": [
-                            {
-                                "id": "custom-child",
-                                "label": "Custom Child",
-                                "translations": {"fr": "Option personnalisée"},
-                            }
-                        ],
-                    }
-                ]
-            },
-            enforce_defaults=False,
+            hierarchy,
         )
 
-        self.assertEqual(
-            normalized,
-            {
-                "groups": [
-                    {
-                        "id": "custom-group",
-                        "label": "Custom Group",
-                        "children": [
-                            {"id": "custom-child", "label": "Custom Child"}
-                        ],
-                    }
-                ]
-            },
+        self.assertFalse(
+            any(
+                "translations" in node
+                for group in normalized["groups"]
+                for node in [group, *group["children"]]
+            )
         )
+
+    def test_area_of_expertise_rejects_custom_groups(self):
+        hierarchy = get_default_nested_configuration(AREA_OF_EXPERTISE_KEY)
+        hierarchy["groups"].append(
+            {"id": "custom-group", "label": "Custom Group", "children": []}
+        )
+
+        with self.assertRaisesRegex(
+            HierarchicalConfigurationError,
+            "Custom groups are not allowed",
+        ):
+            normalize_nested_configuration(AREA_OF_EXPERTISE_KEY, hierarchy)
+
+    def test_area_of_expertise_rejects_custom_options(self):
+        hierarchy = get_default_nested_configuration(AREA_OF_EXPERTISE_KEY)
+        hierarchy["groups"][0]["children"].append(
+            {"id": "custom-child", "label": "Custom Child"}
+        )
+
+        with self.assertRaisesRegex(
+            HierarchicalConfigurationError,
+            "Custom options are not allowed",
+        ):
+            normalize_nested_configuration(AREA_OF_EXPERTISE_KEY, hierarchy)
 
     def test_default_hierarchies_are_valid(self):
         disciplines = normalize_nested_configuration(
