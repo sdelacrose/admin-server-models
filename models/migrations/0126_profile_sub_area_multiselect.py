@@ -1,5 +1,6 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import migrations, models
+from django.db.migrations.exceptions import IrreversibleError
 
 
 PROFILE_MODELS = ("User", "CompanyProfile")
@@ -18,8 +19,23 @@ def copy_single_values_to_arrays(apps, schema_editor):
 
 
 def copy_arrays_to_single_values(apps, schema_editor):
-    for model_name in PROFILE_MODELS:
-        model = apps.get_model("models", model_name)
+    models_to_restore = [
+        apps.get_model("models", model_name)
+        for model_name in PROFILE_MODELS
+    ]
+    if any(
+        model.objects.filter(
+            sub_area_of_expertise_values__len__gt=1,
+        ).exists()
+        for model in models_to_restore
+    ):
+        raise IrreversibleError(
+            "Cannot reverse models.0126 while user or company profiles have "
+            "multiple sub-areas of expertise. Remove the additional "
+            "selections explicitly before retrying the rollback."
+        )
+
+    for model in models_to_restore:
         for profile in model.objects.exclude(
             sub_area_of_expertise_values=[],
         ).iterator():
