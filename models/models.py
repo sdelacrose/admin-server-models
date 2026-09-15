@@ -81,7 +81,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     qualifications = models.TextField(null=True, blank=True)
     keywords = models.TextField(null=True, blank=True)
     main_area_of_expertise = models.CharField(max_length=255, null=True, blank=True)
-    sub_area_of_expertise = models.CharField(max_length=255, null=True, blank=True)
+    sub_area_of_expertise = ArrayField(
+        models.CharField(max_length=255),
+        default=list,
+        blank=True,
+    )
     availability_from = models.DateField(null=True, blank=True)
     availability_until = models.DateField(null=True, blank=True)
     availability_type = models.CharField(max_length=50, null=True, blank=True)
@@ -197,7 +201,11 @@ class CompanyProfile(models.Model):
     services = models.TextField(null=True, blank=True)
     expertise = models.TextField(null=True, blank=True)
     main_area_of_expertise = models.CharField(max_length=255, null=True, blank=True)
-    sub_area_of_expertise = models.CharField(max_length=255, null=True, blank=True)
+    sub_area_of_expertise = ArrayField(
+        models.CharField(max_length=255),
+        default=list,
+        blank=True,
+    )
     basyx_server_address = models.TextField(null=True, blank=True)
     basyx_ui_endpoint_address = models.TextField(null=True, blank=True)
     basyx_environment = models.TextField(null=True, blank=True)
