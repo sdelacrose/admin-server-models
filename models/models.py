@@ -555,6 +555,11 @@ class GlobalConfig(models.Model):
         blank=True,
         default=list,
     )
+    offer_validity_periods = ArrayField(
+        models.CharField(max_length=32),
+        blank=True,
+        default=list,
+    )
     project_service_types = ArrayField(
         models.CharField(max_length=255),
         blank=True,
@@ -924,6 +929,11 @@ class CompanyConfig(models.Model):
     )
     opportunity_sales_phase = ArrayField(
         models.CharField(max_length=255),
+        blank=True,
+        default=list,
+    )
+    offer_validity_periods = ArrayField(
+        models.CharField(max_length=32),
         blank=True,
         default=list,
     )
