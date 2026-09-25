@@ -586,6 +586,8 @@ class GlobalConfig(models.Model):
         default=list,
     )
     nested_configurations = models.JSONField(default=dict, blank=True)
+    # Document Control settings (reference, revision, workflow); empty = canonical defaults.
+    document_control_configuration = models.JSONField(default=dict, blank=True)
     configuration_visibility = models.JSONField(default=dict, blank=True)
     rooms = ArrayField(
         models.CharField(max_length=255),
@@ -668,6 +670,8 @@ class ProjectConfigTemplate(models.Model):
         models.CharField(max_length=255), blank=True, default=list
     )
     nested_configurations = models.JSONField(default=dict, blank=True)
+    # Document Control settings (reference, revision, workflow); empty = canonical defaults.
+    document_control_configuration = models.JSONField(default=dict, blank=True)
     skills = ArrayField(
         models.CharField(max_length=255), blank=True, default=default_skills
     )
@@ -963,6 +967,8 @@ class CompanyConfig(models.Model):
         default=list,
     )
     nested_configurations = models.JSONField(default=dict, blank=True)
+    # Document Control settings (reference, revision, workflow); empty = canonical defaults.
+    document_control_configuration = models.JSONField(default=dict, blank=True)
     configuration_visibility = models.JSONField(default=dict, blank=True)
     salutation = ArrayField(
         models.CharField(max_length=255),

@@ -1,6 +1,9 @@
 from copy import deepcopy
 
 from . import constants
+from .document_control_configuration import (
+    default_document_control_configuration,
+)
 from .hierarchical_configurations import (
     DOCUMENT_DISCIPLINES_KEY,
     flatten_nested_configurations,
@@ -52,6 +55,7 @@ COMPANY_CONFIGURATION_FIELDS = (
     "document_disciplines",
     "nested_configurations",
     "configuration_visibility",
+    "document_control_configuration",
     "rooms",
     "skills",
 )
@@ -77,6 +81,7 @@ PROJECT_CONFIGURATION_FIELDS = (
     "requirement_status_options",
     "bom_status_options",
     "nested_configurations",
+    "document_control_configuration",
 )
 
 NESTED_DERIVED_FIELDS = {
@@ -181,6 +186,7 @@ def _canonical_project_defaults():
         "document_categories": list(constants.GC_DOCUMENT_CATEGORIES),
         "document_disciplines": flattened[DOCUMENT_DISCIPLINES_KEY],
         "nested_configurations": nested,
+        "document_control_configuration": default_document_control_configuration(),
         "skills": list(constants.GC_SKILLS),
     }
 

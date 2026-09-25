@@ -291,6 +291,12 @@ def preserve_local_configuration(
     merged_list_values = {}
 
     for field_name in field_names:
+        if field_name == "document_control_configuration":
+            # Structured object (not a list): the local setting wins when present.
+            result[field_name] = deepcopy(
+                local.get(field_name) or template.get(field_name) or {}
+            )
+            continue
         if field_name in {
             "nested_configurations",
             "configuration_visibility",
