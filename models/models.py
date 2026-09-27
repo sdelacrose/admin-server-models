@@ -214,11 +214,24 @@ class CompanyProfile(models.Model):
     nace_code_three = models.TextField(null=True, blank=True)
     is_freetrial_availed = models.BooleanField(default=False)
     currency = models.CharField(max_length=100, blank=True, null=True, default="€")
+    # Short code used in permanent Document references (COMPANY_CODE-DISCIPLINE_CODE-...):
+    # proposed from the company name at first use, editable until the company's first
+    # permanent company-level Document reference exists (checked in the `backend` repository,
+    # where Document lives), then locked. Mirrors Project.project_code.
+    company_code = models.CharField(max_length=10, blank=True, default="")
 
     tracker = FieldTracker()
 
     def __str__(self):
         return str(self.company_name)
+
+    def save(self, *args, **kwargs):
+        if not self.company_code:
+            # Proposed once; nothing here re-derives or overwrites an existing code.
+            from models.company_codes import propose_unique_company_code
+
+            self.company_code = propose_unique_company_code(self)
+        super().save(*args, **kwargs)
 
 
 class SolutionDisplayConfiguration(models.Model):
