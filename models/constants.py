@@ -234,6 +234,15 @@ GC_TRANSMITTAL_CATEGORIES = [
     "For review",
     "For information",
 ]
+# LOT 3B stabilization: Correspondence Type reference data -- plain labels only, no
+# "Label:CODE" segment (Correspondence numbering never needs one).
+GC_CORRESPONDENCE_TYPES = [
+    "Letter",
+    "Email",
+    "Notice",
+    "Request",
+    "Other",
+]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
 
