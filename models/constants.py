@@ -39,6 +39,9 @@ SOLUTION_MODULES = [
     "project_content",
     "machines",
     "equipments",
+    # MAIL-1.1C3-REGISTRY-2: matches the real, already-seeded backend permission module
+    # "mail" (userapis, MAIL-1.1B's "Mailbox Admin" role/mail.admin_shared_mailbox).
+    "mail",
 ]
 
 PROJECT_MODULES = [
