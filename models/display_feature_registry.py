@@ -549,6 +549,24 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         parent="company.configuration",
         permission_rule=permission(company, "project_content"),
     )
+    # MAIL-1.1C3-REGISTRY-2: registers the Mailbox Management admin UI (frontend already
+    # built, MAIL-1.1C3) -- energy_consultant_solution only, per this lot's explicit scope.
+    # Deliberately no route-level permission_rule here, same precedent as
+    # company.ai_assistant just above: this one key covers a page with TWO areas that need
+    # different audiences -- "My Mailboxes" (any authenticated company user, their own
+    # accessible mailboxes) and "Administration" (mail.admin_shared_mailbox holders only).
+    # A route-level permission_rule would gate the WHOLE page on the admin permission and
+    # make My Mailboxes unreachable for everyone else, which this lot's own instructions
+    # explicitly rule out. The already-built page itself performs the finer, per-tab split
+    # (usePermissionCheck against mail.admin_shared_mailbox for the Administration tab
+    # only), and every mutation is independently re-enforced by the existing backend
+    # permission checks regardless of what this registry entry or the UI shows.
+    add(
+        "company.configuration.mailboxes",
+        FeatureType.SUBMODULE,
+        parent="company.configuration",
+        solutions=ENERGY_ONLY,
+    )
 
     add("project", FeatureType.SECTION, solutions=PROJECT_SOLUTIONS)
     add(

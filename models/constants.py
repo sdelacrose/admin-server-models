@@ -39,6 +39,9 @@ SOLUTION_MODULES = [
     "project_content",
     "machines",
     "equipments",
+    # MAIL-1.1C3-REGISTRY-2: matches the real, already-seeded backend permission module
+    # "mail" (userapis, MAIL-1.1B's "Mailbox Admin" role/mail.admin_shared_mailbox).
+    "mail",
 ]
 
 PROJECT_MODULES = [
@@ -233,6 +236,15 @@ GC_TRANSMITTAL_CATEGORIES = [
     "Available",
     "For review",
     "For information",
+]
+# LOT 3B stabilization: Correspondence Type reference data -- plain labels only, no
+# "Label:CODE" segment (Correspondence numbering never needs one).
+GC_CORRESPONDENCE_TYPES = [
+    "Letter",
+    "Email",
+    "Notice",
+    "Request",
+    "Other",
 ]
 GC_PRIORITY_LEVELS = ["Low", "Medium", "High"]
 GC_PROJECT_PRIORITY_LEVELS = ["Very Low","Low", "Medium", "High", "Very High"]
