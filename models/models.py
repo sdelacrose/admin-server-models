@@ -24,6 +24,33 @@ from .display_feature_resolver import (
 def default_skills():
     return list(GC_SKILLS)
 
+
+def default_working_days():
+    """ISO weekday numbers (1=Monday..7=Sunday) that count as working days for this
+    organization/country. Monday-Friday by default. Configuration only in this lot --
+    not yet consulted by calculate_leave_days (balance calculation is a later lot)."""
+    return [1, 2, 3, 4, 5]
+
+
+def default_leave_type_organization_defaults():
+    """Admin-configurable baseline for company-scope "complementary" leave types (no
+    specific Admin template to inherit from) -- read live by LeaveType.effective_value,
+    never copied into individual rows. Same values the 0132 backfill migration used, so
+    a complementary type and a freshly-backfilled one behave identically until an Admin
+    actually edits this GlobalConfig field."""
+    from datetime import date
+
+    today = date.today()
+    return {
+        "is_active": True,
+        "deduction_mode": "working_days",
+        "cycle_start_date": date(today.year, 1, 1).isoformat(),
+        "cycle_end_date": date(today.year, 12, 31).isoformat(),
+        "allow_half_day": False,
+        "requires_supporting_document": False,
+        "consumes_balance": True,
+    }
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -158,7 +185,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class FreelancerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='freelancer_profile')
     bank_name = models.CharField(max_length=255)
-    iban = models.CharField(max_length=255)
+    iban = models.CharField(max_length=255, null=True, blank=True)
     bic = models.CharField(max_length=255)
     bank_address = models.TextField()
     currency = models.CharField(max_length=100, blank=True, null=True, default="€")
@@ -189,7 +216,7 @@ class CompanyProfile(models.Model):
     company_web_address = models.TextField()
     company_email_address = models.TextField()
     company_tax_reference = models.TextField()
-    company_iban = models.TextField()
+    company_iban = models.TextField(null=True, blank=True)
     company_bank_name = models.TextField(null=True,blank=True)
     company_bic = models.TextField(null=True, blank=True)
     company_bank_address = models.TextField(null=True, blank=True)
@@ -303,7 +330,7 @@ class BankDetail(models.Model):
         on_delete=models.CASCADE,
         related_name="bank_details"
     )
-    company_iban = models.TextField()
+    company_iban = models.TextField(null=True, blank=True)
     company_bank_name = models.TextField(null=True, blank=True)
     company_bic = models.TextField(null=True, blank=True)
     company_bank_address = models.TextField(null=True, blank=True)
@@ -352,6 +379,11 @@ class ConnectionUser(models.Model):
         unique_together = ('connection', 'user')
 
 
+class StaffContractType(models.TextChoices):
+    PERMANENT = "permanent", "Permanent"
+    TEMPORARY = "temporary", "Temporary"
+
+
 class Staff(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff')
     supervisor = models.ForeignKey(
@@ -366,6 +398,29 @@ class Staff(models.Model):
     wfh_leaves_allowed = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=12)
     weekly_hours = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     hourly_rate = models.FloatField(null=True, blank=True, default=75)
+
+    # LOT RH10: no reliable contractual start/end date existed anywhere in this model
+    # before this lot (confirmed: no hire/departure date field, no prior lot defining
+    # one). Added as explicit, RH-configurable, nullable fields rather than inferring
+    # a hire date from User.date_joined (an account-creation timestamp, not a
+    # contractual date). A missing contract_start_date blocks monthly-accrual
+    # processing for that employee with an explicit diagnostic -- it is never guessed.
+    contract_start_date = models.DateField(null=True, blank=True)
+    contract_end_date = models.DateField(null=True, blank=True)
+
+    # AI-1685: explicit temporary/permanent status -- null for existing staff
+    # with no information recorded yet ("a renseigner"), NEVER inferred from
+    # contract_end_date being absent (a permanent contract and an
+    # unrecorded/unknown status look identical from contract_end_date alone).
+    # Validated and audited at the API layer (serializers.staff), not here --
+    # this field itself stays a plain, unhistorized column, same precedent as
+    # contract_start_date/contract_end_date above (see
+    # human_resource_management.models.staff.StaffContractAuditLog for the
+    # append-only audit trail of changes to this field and to
+    # contract_end_date).
+    contract_type = models.CharField(
+        max_length=16, choices=StaffContractType.choices, null=True, blank=True,
+    )
 
     def __str__(self):
         return f"{self.user.email}"
@@ -562,6 +617,19 @@ class GlobalConfig(models.Model):
         models.CharField(max_length=255),
         blank=True,
         default=list,
+    )
+    working_days = ArrayField(
+        models.PositiveSmallIntegerField(),
+        blank=True,
+        default=default_working_days,
+        help_text="ISO weekday numbers (1=Monday..7=Sunday) treated as working days "
+        "for this organization/country.",
+    )
+    leave_type_organization_defaults = models.JSONField(
+        default=default_leave_type_organization_defaults,
+        blank=True,
+        help_text="Admin-configurable baseline for company-scope leave types that have "
+        "no specific Admin template to inherit from.",
     )
     opportunity_sales_phase = ArrayField(
         models.CharField(max_length=255),
@@ -1005,9 +1073,378 @@ class CompanyConfig(models.Model):
         blank=True,
         default=default_skills,
     )
+    # LOT RH 9: explicit, per-company/solution opt-in into the new
+    # per-employee/per-type/per-cycle leave entitlement mechanism -- false by
+    # default so existing companies keep running on the historical global
+    # Staff.annual_leaves_allowed balance until their RH explicitly confirms
+    # a reviewed transition (see human_resource_management.services.
+    # leave_entitlement_activation). `leave_entitlement_transition_leave_type`
+    # records which single LeaveType the old annual_leaves_allowed number was
+    # attached to at activation time -- it is never duplicated onto any other
+    # type.
+    leave_entitlement_mode_active = models.BooleanField(default=False)
+    leave_entitlement_activated_at = models.DateTimeField(null=True, blank=True)
+    leave_entitlement_transition_leave_type = models.ForeignKey(
+        'LeaveType',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='+',
+    )
+    # LOT RH10 follow-up: explicit per-company IANA timezone name (e.g.
+    # "Europe/Paris"), required before monthly-accrual's "end of local month"
+    # batch processing can run for this company. No fallback to Django's
+    # global TIME_ZONE and never inferred from a country field -- a company
+    # with this left unset simply cannot have its monthly accrual processed
+    # automatically, and the batch job says so explicitly (see
+    # human_resource_management.services.leave_accrual).
+    accrual_timezone = models.CharField(max_length=64, null=True, blank=True)
 
     class Meta:
         unique_together = ('company_profile', 'user', 'solution')
+
+
+class LeaveType(models.Model):
+    """A configurable leave type, scoped either to a company's Admin defaults
+    (``global_config`` set) or to one of its live per-solution configs
+    (``company_config`` set) -- never both, enforced by ``leave_type_single_scope``.
+
+    Company-scope rows may ``inherits_from`` an Admin-scope row of the same company.
+    Each configurable attribute is nullable: ``None`` means "inherited from
+    ``inherits_from``", a concrete value means "explicit local override". Values are
+    resolved on read via ``effective_value``/``effective_config``, never copied down
+    into the row automatically -- so a company row stays a thin diff against its
+    Admin template until someone explicitly overrides a field.
+    """
+
+    DEDUCTION_CALENDAR_DAYS = "calendar_days"
+    DEDUCTION_WORKING_DAYS = "working_days"
+    DEDUCTION_MODE_CHOICES = (
+        (DEDUCTION_CALENDAR_DAYS, "Calendar days"),
+        (DEDUCTION_WORKING_DAYS, "Working days"),
+    )
+
+    INHERITABLE_FIELDS = (
+        "is_active",
+        "deduction_mode",
+        "cycle_start_date",
+        "cycle_end_date",
+        "allow_half_day",
+        "requires_supporting_document",
+        "consumes_balance",
+    )
+
+    global_config = models.ForeignKey(
+        GlobalConfig,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="leave_type_definitions",
+        help_text="Set for an Admin-scope (company default template) leave type.",
+    )
+    company_config = models.ForeignKey(
+        CompanyConfig,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="leave_type_definitions",
+        help_text="Set for a Company-scope (live, per-solution) leave type.",
+    )
+    inherits_from = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="company_overrides",
+        help_text="Admin-scope LeaveType this company-scope entry is based on.",
+    )
+
+    key = models.SlugField(
+        max_length=100,
+        help_text="Stable identifier (matches LeaveRequest.type going forward).",
+    )
+    name = models.CharField(max_length=255)
+
+    is_active = models.BooleanField(null=True, blank=True)
+    deduction_mode = models.CharField(
+        max_length=20, choices=DEDUCTION_MODE_CHOICES, null=True, blank=True
+    )
+    cycle_start_date = models.DateField(null=True, blank=True)
+    cycle_end_date = models.DateField(null=True, blank=True)
+    allow_half_day = models.BooleanField(null=True, blank=True)
+    requires_supporting_document = models.BooleanField(null=True, blank=True)
+    consumes_balance = models.BooleanField(null=True, blank=True)
+
+    # LOT RH10: monthly accrual mode, additive to the quota mode from LOT RH9.
+    # Deliberately kept OUTSIDE INHERITABLE_FIELDS/clean()'s "required for Admin-scope
+    # rows" machinery: unlike the fields above, there is no sensible organization-wide
+    # default rate -- None genuinely means "this type is not configured for monthly
+    # accrual" (it stays quota-mode), not "inherit a baseline". Resolved via the
+    # dedicated effective_accrual_rate()/effective_accrual_effective_date() helpers
+    # below, which reuse the same inherits_from fallback without the mandatory-value
+    # requirement. A rate change here never rewrites LeaveAccrualCredit rows already
+    # created with the previous rate (see human_resource_management.services.leave_accrual).
+    monthly_accrual_rate = models.DecimalField(
+        max_digits=8,
+        decimal_places=4,
+        null=True,
+        blank=True,
+        help_text="Monthly accrual rate for this leave type, or None if not in monthly-accrual mode.",
+    )
+    accrual_effective_date = models.DateField(
+        null=True,
+        blank=True,
+        help_text="No monthly accrual credit is generated for a period before this date.",
+    )
+
+    # LOT RH11: capped carry-over + mandatory expiration, additive to both
+    # quota (RH9) and monthly-accrual (RH10) modes. Deliberately kept OUTSIDE
+    # INHERITABLE_FIELDS -- disabled (False/None) is a perfectly safe default,
+    # no organization-wide baseline makes sense. A later change to any of
+    # these three fields never revises an already-created LeaveCycleClosure/
+    # LeaveCarryOver row (see human_resource_management.services.leave_carryover) --
+    # those capture the values AS APPLIED at closure time.
+    carry_over_enabled = models.BooleanField(
+        default=False,
+        help_text="Whether unused balance is carried over to the immediately following cycle.",
+    )
+    carry_over_cap = models.DecimalField(
+        max_digits=12, decimal_places=6, null=True, blank=True,
+        help_text="None = no cap. 0 = carry-over enabled but nothing is ever actually carried.",
+    )
+    carry_over_expiration_months = models.PositiveIntegerField(
+        null=True, blank=True,
+        help_text="Required, strictly positive, whenever carry_over_enabled is True.",
+    )
+
+    # LOT RH12: part-time proration of MONTHLY ACCRUAL ONLY, additive to RH10.
+    # Deliberately kept OUTSIDE INHERITABLE_FIELDS -- disabled (False) is a
+    # perfectly safe default, no organization-wide baseline makes sense, and
+    # activation is explicit per type (never implicit org-wide inheritance).
+    # Never applied a second time to quota (RH9), carry-over (RH11) or
+    # request-day-counting (services.leave_balance) -- those stay untouched.
+    # Changes are historized in LeaveTypeQuotiteProrationHistory (see
+    # human_resource_management.services.leave_accrual.record_policy_change);
+    # this field is only ever the CURRENT value, resolved historically for a
+    # given month via resolve_historical_policy, same convention as
+    # monthly_accrual_rate/LeaveTypeAccrualRateHistory.
+    prorate_accrual_by_quotite = models.BooleanField(
+        default=False,
+        help_text="Whether monthly accrual is prorated by the employee's quotite (StaffQuotiteHistory).",
+    )
+
+    # LOT L04 (SST): a stable, explicit attribute -- never a free-text/key
+    # search ("maladie"/"sick"/etc. could mean anything) -- marking a type as
+    # managed by the dedicated SST module rather than the classic leave form.
+    # Deliberately OUTSIDE INHERITABLE_FIELDS: an SST type is never a company's
+    # organization-wide default/template, it is created directly as its own
+    # standalone company-scope row by the SST module. Excluded from the
+    # classic form's selectable catalog (views.leave_type.applicable/admin_
+    # applicable, models.leave_type_sync.sync_leave_types_array) and refused
+    # outright if submitted directly to the classic LeaveRequest create/update
+    # endpoints (see human_resource_management.views.leave.LeaveRequestViewSet) --
+    # but otherwise a perfectly ordinary LeaveType for balance/accrual/RH13
+    # purposes, reused unchanged by the SST service layer.
+    is_sst_managed = models.BooleanField(
+        default=False,
+        help_text="Managed by the SST module -- excluded from the classic leave request form.",
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("global_config_id", "company_config_id", "key")
+        constraints = [
+            models.CheckConstraint(
+                condition=(
+                    models.Q(global_config__isnull=False, company_config__isnull=True)
+                    | models.Q(global_config__isnull=True, company_config__isnull=False)
+                ),
+                name="leave_type_single_scope",
+            ),
+            models.UniqueConstraint(
+                fields=("global_config", "key"),
+                condition=models.Q(global_config__isnull=False),
+                name="unique_admin_leave_type_key",
+            ),
+            models.UniqueConstraint(
+                fields=("company_config", "key"),
+                condition=models.Q(company_config__isnull=False),
+                name="unique_company_leave_type_key",
+            ),
+        ]
+
+    def __str__(self):
+        scope = "admin" if self.global_config_id else "company"
+        return f"{self.key} ({scope})"
+
+    def clean(self):
+        errors = {}
+        if self.global_config_id and self.inherits_from_id:
+            # Admin-scope rows are the root of the inheritance chain: letting one
+            # inherit too would make cycle-detection below meaningless (a chain could
+            # then loop admin->admin->... indefinitely), and it would defeat the
+            # "Admin-scope rows always carry explicit values" guarantee the rest of
+            # this validation (and effective_value's fallback logic) relies on.
+            errors["inherits_from"] = "An Admin-scope leave type cannot itself inherit."
+        if self.inherits_from_id and self.inherits_from_id == self.id:
+            errors["inherits_from"] = "A leave type cannot inherit from itself."
+        if self.company_config_id and self.inherits_from_id:
+            parent = self.inherits_from
+            if not parent.global_config_id:
+                errors["inherits_from"] = (
+                    "A company-scope leave type can only inherit from an "
+                    "Admin-scope leave type."
+                )
+            elif (
+                self.company_config
+                and self.company_config.company_profile_id
+                and parent.global_config.company_profile_id
+                != self.company_config.company_profile_id
+            ):
+                errors["inherits_from"] = (
+                    "Cannot inherit from another company's Admin leave type."
+                )
+            else:
+                # Defensive: structurally a cycle can't happen once Admin-scope rows
+                # are barred from inheriting (above), but walk the chain anyway in
+                # case that invariant is ever relaxed.
+                seen = {self.id} if self.id else set()
+                node = parent
+                depth = 0
+                while node is not None and node.inherits_from_id:
+                    if node.inherits_from_id in seen or depth > 20:
+                        errors["inherits_from"] = "Inheritance cycle detected."
+                        break
+                    seen.add(node.id)
+                    node = node.inherits_from
+                    depth += 1
+        if self.global_config_id:
+            for field_name in self.INHERITABLE_FIELDS:
+                if getattr(self, field_name) is None:
+                    errors[field_name] = (
+                        "This field is required for an Admin-scope leave type."
+                    )
+        # LOT RH11: expiration is mandatory whenever carry-over is enabled --
+        # a business policy choice (see services.leave_carryover module
+        # docstring), not a technical necessity, but enforced here to never
+        # leave a report with no resolvable due date.
+        if self.carry_over_enabled:
+            if not self.carry_over_expiration_months:
+                errors["carry_over_expiration_months"] = (
+                    "Required and must be a strictly positive number of months "
+                    "whenever carry-over is enabled."
+                )
+            elif self.carry_over_expiration_months <= 0:
+                errors["carry_over_expiration_months"] = (
+                    "Must be a strictly positive number of months."
+                )
+        if errors:
+            raise ValidationError(errors)
+
+    # Reads the Admin-configurable organization baseline (GlobalConfig.
+    # leave_type_organization_defaults) live -- never copied into this row -- so a
+    # company-only "complementary" leave type (no matching Admin template) resolves to
+    # a fully working effective config without being artificially linked to some
+    # unrelated Admin row just to satisfy inheritance. Falls back to the same hardcoded
+    # values the 0132 backfill migration used only when no GlobalConfig exists yet, or
+    # it doesn't have a value for this particular field.
+    def _organization_default(self, field_name):
+        from datetime import date
+
+        today = date.today()
+        hardcoded_fallback = {
+            "is_active": True,
+            "deduction_mode": self.DEDUCTION_WORKING_DAYS,
+            "cycle_start_date": date(today.year, 1, 1),
+            "cycle_end_date": date(today.year, 12, 31),
+            "allow_half_day": False,
+            "requires_supporting_document": False,
+            "consumes_balance": True,
+        }
+
+        global_config = None
+        if self.company_config_id and self.company_config.company_profile_id:
+            global_config = GlobalConfig.objects.filter(
+                company_profile_id=self.company_config.company_profile_id
+            ).first()
+
+        if global_config is not None:
+            stored = global_config.leave_type_organization_defaults or {}
+            value = stored.get(field_name)
+            if value is not None:
+                if field_name in ("cycle_start_date", "cycle_end_date") and isinstance(
+                    value, str
+                ):
+                    return date.fromisoformat(value)
+                return value
+
+        return hardcoded_fallback[field_name]
+
+    def effective_value(self, field_name):
+        value = getattr(self, field_name)
+        if value is not None:
+            return value
+        if self.inherits_from_id:
+            return self.inherits_from.effective_value(field_name)
+        if self.company_config_id:
+            return self._organization_default(field_name)
+        return None
+
+    def effective_config(self):
+        return {
+            field_name: self.effective_value(field_name)
+            for field_name in self.INHERITABLE_FIELDS
+        }
+
+    @property
+    def overridden_fields(self):
+        return {
+            field_name: getattr(self, field_name) is not None
+            for field_name in self.INHERITABLE_FIELDS
+        }
+
+    def effective_accrual_rate(self):
+        if self.monthly_accrual_rate is not None:
+            return self.monthly_accrual_rate
+        if self.inherits_from_id:
+            return self.inherits_from.effective_accrual_rate()
+        return None
+
+    def effective_accrual_effective_date(self):
+        if self.accrual_effective_date is not None:
+            return self.accrual_effective_date
+        if self.inherits_from_id:
+            return self.inherits_from.effective_accrual_effective_date()
+        return None
+
+
+class LeaveSubType(models.Model):
+    """A free-form sub-type under a LeaveType, independently activatable."""
+
+    leave_type = models.ForeignKey(
+        LeaveType, on_delete=models.CASCADE, related_name="sub_types"
+    )
+    key = models.SlugField(max_length=100)
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("leave_type_id", "key")
+        constraints = [
+            models.UniqueConstraint(
+                fields=("leave_type", "key"),
+                name="unique_leave_subtype_key_per_type",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.leave_type.key}:{self.key}"
+
 
 class Feedback(models.Model):
     FEEDBACK_TYPES = [
