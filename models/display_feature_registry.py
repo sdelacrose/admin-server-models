@@ -494,7 +494,12 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         parent=hr,
         permission_rules=(
             permission(company, "time_booking", "view", "review"),
-            permission(company, "leave_request", "view", "review"),
+            # LOT RH 7: `manager_opinion` is a team manager's own, narrower
+            # entitlement (never review/HR rights) -- added here only so the
+            # Time Booking section itself becomes reachable; the Timesheets
+            # tab's own rule below is untouched, so a pure manager still
+            # can't open it, only the Leaves tab (its own rule, also below).
+            permission(company, "leave_request", "view", "review", "manager_opinion"),
         ),
     )
     add(
@@ -507,7 +512,7 @@ def _build_registry() -> tuple[DisplayFeature, ...]:
         f"{time_booking}.tabs.leaves",
         FeatureType.TAB,
         parent=time_booking,
-        permission_rule=permission(company, "leave_request", "view", "review"),
+        permission_rule=permission(company, "leave_request", "view", "review", "manager_opinion"),
     )
     add(
         f"{hr}.overview",
