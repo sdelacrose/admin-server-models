@@ -199,23 +199,7 @@ GC_PROJECT_DOCUMENT_TYPES = [
 ]
 # Backward-compatible alias used by older callers; prefer GC_COMPANY_DOCUMENT_TYPES.
 GC_DOCUMENT_TYPES = GC_COMPANY_DOCUMENT_TYPES
-GC_DOCUMENT_STATUSES = [
-    "Draft",
-    "Under review",
-    "Submitted",
-    "Approved",
-    "Sent",
-    "To be updated",
-    "For construction (IFC)",
-    "Issued",
-    "Revised",
-    "Final",
-    "As-Built",
-    "On Hold",
-    "Cancelled",
-    "Archived",
-    "Other",
-]
+GC_DOCUMENT_STATUSES = ["PREL", "BPE"]
 GC_DOCUMENT_INTERNAL_REVIEW_STATUSES = [
     "In progress",
     "Approved",
@@ -240,6 +224,7 @@ GC_TRANSMITTAL_CATEGORIES = [
 # LOT 3B stabilization: Correspondence Type reference data -- plain labels only, no
 # "Label:CODE" segment (Correspondence numbering never needs one).
 GC_CORRESPONDENCE_TYPES = [
+    "Surveillance",
     "Letter",
     "Email",
     "Notice",
